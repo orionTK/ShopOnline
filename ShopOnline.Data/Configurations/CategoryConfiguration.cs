@@ -21,6 +21,4 @@ namespace ShopOnline.Data.Configurations
 
         }
     }
-    {
-    }
 }

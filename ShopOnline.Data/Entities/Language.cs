@@ -6,7 +6,7 @@ namespace ShopOnline.Data.Entities
 {
     public class Language
     {
-        public int LanguageId { get; set; }
+        public string LanguageId { get; set; }
         public string LanguageName { get; set; }
         public bool IsDefault { get; set; }
         public List<ProductTranslation> ProductTranslations { get; set; }
