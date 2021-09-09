@@ -16,11 +16,11 @@ namespace ShopOnline.Data.Configurations
             builder.HasKey(x => x.ProductTranslationId);
             builder.Property(x => x.ProductTranslationId).UseIdentityColumn();
 
-            builder.Property(x => x.ProductTranslationtName).IsRequired().HasMaxLength(200);
+            builder.Property(x => x.ProductName).IsRequired().HasMaxLength(200);
 
             builder.Property(x => x.SeoAlias).IsRequired().HasMaxLength(200);
 
-            builder.Property(x => x.SeoTittle).IsRequired().HasMaxLength(200);
+            builder.Property(x => x.SeoTitle).IsRequired().HasMaxLength(200);
 
             builder.Property(x => x.Details).HasMaxLength(500);
             builder.Property(x => x.Description).IsRequired().HasMaxLength(200);

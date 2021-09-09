@@ -12,7 +12,7 @@ namespace ShopOnline.Data.Entities
         public string Details { get; set; }
         public string SeoDescription { get; set; }
         public string SeoTitle { get; set; }
-        public int SeoAlias { get; set; }
+        public string SeoAlias { get; set; }
         public string LanguageId { get; set; }
         public Category Category { get; set; }
         public Language Language { get; set; }

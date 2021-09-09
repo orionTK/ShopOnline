@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopOnline.Data.EF;
 
 namespace ShopOnline.Data.Migrations
 {
     [DbContext(typeof(ShopOnlineDbContext))]
-    partial class ShopOnlineDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210909054920_Seeding")]
+    partial class Seeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,6 +44,11 @@ namespace ShopOnline.Data.Migrations
                         {
                             Key = "HomeKeyword",
                             Value = "This is keyword of ShopOnlineTK"
+                        },
+                        new
+                        {
+                            Key = "HomeDescription",
+                            Value = "This is description of ShopOnlineTK"
                         });
                 });
 
@@ -99,6 +106,22 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            IsShowOnHome = true,
+                            SortOrder = 1,
+                            Status = 1
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            IsShowOnHome = true,
+                            SortOrder = 2,
+                            Status = 1
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.CategoryTranslation", b =>
@@ -147,6 +170,48 @@ namespace ShopOnline.Data.Migrations
                     b.HasIndex("LanguageId");
 
                     b.ToTable("CategoryTranslations");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryTranslationId = 1,
+                            CategoryId = 1,
+                            CategoryName = "Áo nam",
+                            LanguageId = "vi",
+                            SeoAlias = "ao-nam",
+                            SeoDescription = "Sản phẩm áo thời trang nam",
+                            SeoTitle = "Sản phẩm áo thời trang nam"
+                        },
+                        new
+                        {
+                            CategoryTranslationId = 2,
+                            CategoryId = 1,
+                            CategoryName = "Men Shirt",
+                            LanguageId = "en",
+                            SeoAlias = "men-shirt",
+                            SeoDescription = "The shirt products for men",
+                            SeoTitle = "The shirt products for men"
+                        },
+                        new
+                        {
+                            CategoryTranslationId = 3,
+                            CategoryId = 2,
+                            CategoryName = "Áo nữ",
+                            LanguageId = "vi",
+                            SeoAlias = "ao-nữ",
+                            SeoDescription = "Sản phẩm áo thời trang nữ",
+                            SeoTitle = "Sản phẩm áo thời trang nữ"
+                        },
+                        new
+                        {
+                            CategoryTranslationId = 4,
+                            CategoryId = 2,
+                            CategoryName = "Women Shirt",
+                            LanguageId = "en",
+                            SeoAlias = "women-shirt",
+                            SeoDescription = "The shirt products for women",
+                            SeoTitle = "The shirt products for women"
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Contact", b =>
@@ -200,6 +265,20 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("LanguageId");
 
                     b.ToTable("Languages");
+
+                    b.HasData(
+                        new
+                        {
+                            LanguageId = "vi",
+                            IsDefault = true,
+                            LanguageName = "Tiếng Việt"
+                        },
+                        new
+                        {
+                            LanguageId = "en",
+                            IsDefault = false,
+                            LanguageName = "English"
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Order", b =>
@@ -303,6 +382,17 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            CreateDated = new DateTime(2021, 9, 9, 12, 49, 19, 346, DateTimeKind.Local).AddTicks(654),
+                            OriginalPrice = 100000m,
+                            Price = 20000m,
+                            Stock = 0,
+                            ViewCount = 0
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.ProductImage", b =>
@@ -353,6 +443,13 @@ namespace ShopOnline.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductInCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            ProductId = 1
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.ProductTranslation", b =>
@@ -409,6 +506,32 @@ namespace ShopOnline.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductTranslations");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductTranslationId = 1,
+                            Description = "Áo sơ mi nam trắng Việt Tiến",
+                            Details = "Áo sơ mi nam trắng Việt Tiến",
+                            LanguageId = "vi",
+                            ProductId = 1,
+                            ProductName = "Áo sơ mi nam trắng Việt Tiến",
+                            SeoAlias = "ao-nam-so-mi-nam-trang-viet-tien",
+                            SeoDescription = "Áo sơ mi nam trắng Việt Tiến",
+                            SeoTitle = "Áo sơ mi nam trắng Việt Tiến"
+                        },
+                        new
+                        {
+                            ProductTranslationId = 2,
+                            Description = "",
+                            Details = "Viet Tien Men Shirt",
+                            LanguageId = "en",
+                            ProductId = 1,
+                            ProductName = "Viet Tien Men Shirt",
+                            SeoAlias = "men-shirt",
+                            SeoDescription = "Viet Tien Men Shirt",
+                            SeoTitle = "Viet Tien Men Shirt"
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Promotion", b =>
