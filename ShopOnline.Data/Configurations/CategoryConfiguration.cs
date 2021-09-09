@@ -17,7 +17,7 @@ namespace ShopOnline.Data.Configurations
             builder.Property(x => x.CategoryId).UseIdentityColumn();
             builder.Property(x => x.IsShowOnHome);
             builder.Property(x => x.SortOrder);
-            builder.Property(x => x.Status).HasDefaultValue(Status.Activate);
+            builder.Property(x => x.Status).HasDefaultValue(Status.Active);
 
         }
     }

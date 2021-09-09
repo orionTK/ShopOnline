@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopOnline.Data.EF;
 
 namespace ShopOnline.Data.Migrations
 {
     [DbContext(typeof(ShopOnlineDbContext))]
-    partial class ShopOnlineDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210909073722_aspnetcoreIdentity")]
+    partial class aspnetcoreIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,8 +147,6 @@ namespace ShopOnline.Data.Migrations
                     b.Property<int>("CartId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Price")
@@ -164,8 +164,6 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("CartId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Carts");
                 });
@@ -341,8 +339,6 @@ namespace ShopOnline.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("OrderId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -659,8 +655,6 @@ namespace ShopOnline.Data.Migrations
 
                     b.HasKey("TransactionId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Transactions");
                 });
 
@@ -738,15 +732,7 @@ namespace ShopOnline.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShopOnline.Data.Entities.User", "User")
-                        .WithMany("Carts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.CategoryTranslation", b =>
@@ -766,17 +752,6 @@ namespace ShopOnline.Data.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Language");
-                });
-
-            modelBuilder.Entity("ShopOnline.Data.Entities.Order", b =>
-                {
-                    b.HasOne("ShopOnline.Data.Entities.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.OrderDetail", b =>
@@ -847,17 +822,6 @@ namespace ShopOnline.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ShopOnline.Data.Entities.Transaction", b =>
-                {
-                    b.HasOne("ShopOnline.Data.Entities.User", "User")
-                        .WithMany("Transactions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ShopOnline.Data.Entities.Category", b =>
                 {
                     b.Navigation("CategoryTranslations");
@@ -888,15 +852,6 @@ namespace ShopOnline.Data.Migrations
                     b.Navigation("ProductInCategories");
 
                     b.Navigation("ProductTranslations");
-                });
-
-            modelBuilder.Entity("ShopOnline.Data.Entities.User", b =>
-                {
-                    b.Navigation("Carts");
-
-                    b.Navigation("Orders");
-
-                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

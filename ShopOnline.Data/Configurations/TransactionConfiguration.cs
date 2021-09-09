@@ -30,7 +30,7 @@ namespace ShopOnline.Data.Configurations
             builder.Property(x => x.Status);
             builder.Property(x => x.Provider);
 
-
+            builder.HasOne(x => x.User).WithMany(x => x.Transactions).HasForeignKey(x => x.UserId);
 
         }
     }

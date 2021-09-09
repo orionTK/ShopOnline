@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShopOnline.Data.Configurations;
 using ShopOnline.Data.Entities;
 using ShopOnline.Data.Extensions;
@@ -8,7 +10,7 @@ using System.Text;
 
 namespace ShopOnline.Data.EF
 {
-    public class ShopOnlineDbContext : DbContext
+    public class ShopOnlineDbContext : IdentityDbContext<User, Role, Guid>
     {
         public ShopOnlineDbContext(DbContextOptions options) : base(options)
         {
@@ -31,6 +33,14 @@ namespace ShopOnline.Data.EF
             modelBuilder.ApplyConfiguration(new PromotionConfiguration());
             modelBuilder.ApplyConfiguration(new SlideConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
+            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRoles").HasKey(x => new { x.UserId , x.RoleId}); ;
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
+            modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens").HasKey(x => x.UserId); ;
+            modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogins").HasKey(x=>x.UserId);
+
             //modelBuilder.ApplyConfiguration(new PromotionConfiguration());
             //modelBuilder.Seed();
             //data-seeding

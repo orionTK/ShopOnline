@@ -13,10 +13,12 @@ namespace ShopOnline.Data.Configurations
         {
             builder.ToTable("Carts");
             builder.HasKey(x => x.CartId);
+
             builder.Property(x => x.CartId).UseIdentityColumn();
-            builder.Property(x => x.Price).IsRequired(true);
-            builder.Property(x => x.Quantity).IsRequired(true);
+
+
             builder.HasOne(x => x.Product).WithMany(x => x.Carts).HasForeignKey(x => x.ProductId);
+            builder.HasOne(x => x.User).WithMany(x => x.Carts).HasForeignKey(x => x.UserId);
         }
     }
 }
