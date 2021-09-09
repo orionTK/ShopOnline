@@ -6,7 +6,7 @@ namespace ShopOnline.Data.Enum
 {
     public enum Status
     {
-        InActivate,
-        Activate
+        InActive,
+        Active
     }
 }
