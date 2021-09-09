@@ -13,6 +13,7 @@ namespace ShopOnline.Data.Configurations
         {
             builder.ToTable("Products");
             builder.HasKey(x => x.ProductId);
+            builder.Property(x => x.ProductId).UseIdentityColumn();
             builder.Property(x => x.Price).IsRequired();
             builder.Property(x => x.Stock).IsRequired();
             builder.Property(x => x.OriginalPrice).HasDefaultValue(0);

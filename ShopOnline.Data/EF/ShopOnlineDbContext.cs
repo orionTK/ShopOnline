@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopOnline.Data.Configurations;
 using ShopOnline.Data.Entities;
+using ShopOnline.Data.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,6 +32,13 @@ namespace ShopOnline.Data.EF
             modelBuilder.ApplyConfiguration(new SlideConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
             //modelBuilder.ApplyConfiguration(new PromotionConfiguration());
+            //modelBuilder.Seed();
+            //data-seeding
+            modelBuilder.Entity<AppConfig>().HasData(
+                new AppConfig() { Key = "HomeTitle", Value = "This is home page of ShopOnlineTK" },
+                new AppConfig() { Key = "HomeKeyword", Value = "This is keyword of ShopOnlineTK" }
+                );
+
 
         }
 
@@ -40,13 +48,13 @@ namespace ShopOnline.Data.EF
         public DbSet<Language> Languages { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Product> Products { get; set; }
-        
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<ProductTranslation> ProductTranslations { get; set; }
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<AppConfig> AppConfigs { get; set; }
+        public DbSet<Slide> Slide { get; set; }
 
     }
 }
