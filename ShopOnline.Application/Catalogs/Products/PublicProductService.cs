@@ -3,12 +3,13 @@ using ShopOnline.Application.DTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ShopOnline.Application.Catalogs.Products
 {
     public class PublicProductService : IProductService
     {
-        public PageViewModel<ProductViewModel> GetAllByCategoryId(int categoryId, int pageIndex, int pageSize)
+        public Task<PageViewModel<ProductViewModel>> GetAllByCategoryId(int categoryId, int pageIndex, int pageSize)
         {
             throw new NotImplementedException();
         }

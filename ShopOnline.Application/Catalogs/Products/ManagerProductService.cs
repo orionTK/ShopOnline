@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace ShopOnline.Application.Catalogs.Products
 {
-    private readonly ShopOnlineDbContext _context;
     public class MangerProductService : IManagerProductService
     {
         private readonly ShopOnlineDbContext _context;
