@@ -11,7 +11,7 @@ namespace ShopOnline.Data.Migrations
                 table: "Products",
                 keyColumn: "ProductId",
                 keyValue: 1,
-                column: "CreateDated",
+                column: "DateCreated",
                 value: new DateTime(2021, 9, 9, 12, 49, 19, 346, DateTimeKind.Local).AddTicks(654));
         }
 
@@ -21,7 +21,7 @@ namespace ShopOnline.Data.Migrations
                 table: "Products",
                 keyColumn: "ProductId",
                 keyValue: 1,
-                column: "CreateDated",
+                column: "DateCreated",
                 value: new DateTime(2021, 9, 9, 12, 41, 21, 959, DateTimeKind.Local).AddTicks(8457));
         }
     }

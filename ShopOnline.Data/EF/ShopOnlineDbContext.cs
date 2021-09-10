@@ -35,6 +35,9 @@ namespace ShopOnline.Data.EF
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductInCategoryConfiguration());
+
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRoles").HasKey(x => new { x.UserId , x.RoleId}); ;
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
@@ -65,6 +68,10 @@ namespace ShopOnline.Data.EF
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<AppConfig> AppConfigs { get; set; }
         public DbSet<Slide> Slide { get; set; }
+        public DbSet<ProductImage> ProductImage { get; set; }
+        public DbSet<ProductInCategory> ProductInCategory { get; set; }
+
+
 
     }
 }

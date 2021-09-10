@@ -7,5 +7,6 @@ namespace ShopOnline.Application.Catalogs.Products.DTOs.Public
 {
     public class GetProductPagingRequest : PagingRequestBase
     {
+        PagedResult<ProductViewModel> GetAllByCategoryId(GetProductPagingRequest rq);
     }
 }

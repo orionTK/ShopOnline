@@ -100,7 +100,7 @@ namespace ShopOnline.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "ProductId", "CreateDated", "IsFeatured", "OriginalPrice", "Price", "Stock" },
+                columns: new[] { "ProductId", "DateCreated", "IsFeatured", "OriginalPrice", "Price", "Stock" },
                 values: new object[] { 1, new DateTime(2021, 9, 9, 12, 49, 19, 346, DateTimeKind.Local).AddTicks(654), null, 100000m, 20000m, 0 });
 
             migrationBuilder.InsertData(

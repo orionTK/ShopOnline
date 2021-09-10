@@ -13,7 +13,7 @@ namespace ShopOnline.Application.Catalogs.Products
         Task<int> Update(ProductUpdateRequest request);
         Task<bool> UpdatePrice(int productId, decimal newPrice);
         Task<bool> UpdateStock(int productId, int addQuantity);
-        Task<bool> AddViewCount(int productId);
+        Task<bool> AddViewCount(int productId); 
         Task<int> Delete(int productId);
         Task<List<ProductViewModel>> GetAll();
         Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request);
