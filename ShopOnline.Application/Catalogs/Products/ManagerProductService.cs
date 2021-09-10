@@ -26,22 +26,22 @@ namespace ShopOnline.Application.Catalogs.Products
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> Delete(int productId)
+        public Task<int> Delete(int productId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<ProductViewModel>> GetAll()
+        public Task<List<ProductViewModel>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<PageViewModel<ProductViewModel>> GetAllPaging(string keyword, int pageIndex, int pageSize)
+        public Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<int> Update(ProductEditRequest productEditRequest)
+        public Task<int> Update(ProductUpdateRequest request)
         {
             throw new NotImplementedException();
         }
