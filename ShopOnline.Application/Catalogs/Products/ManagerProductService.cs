@@ -111,9 +111,12 @@ namespace ShopOnline.Application.Catalogs.Products
             return pagedResult;
          }
 
-        public Task<int> Update(ProductUpdateRequest request)
+        public async Task<int> Update(ProductUpdateRequest request)
         {
-            throw new NotImplementedException();
+            var p = await _context.Products.FindAsync(request.ProductId);
+            if (p == null) throw new ShopOnlineExeptions($"Don't find a product with id: {request.ProductId}");
+            
+
         }
 
         public Task<bool> UpdatePrice(int productId, decimal newPrice)

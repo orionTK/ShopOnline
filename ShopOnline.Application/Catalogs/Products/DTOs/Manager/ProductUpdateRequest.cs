@@ -7,6 +7,7 @@ namespace ShopOnline.Application.Catalogs.Products.DTOs
     //Data stranfer object
     public class ProductUpdateRequest
     {
+        public int ProductId { get; set; }
         public string ProductName { get; set; }
         public string Description { get; set; }
         public string Details { get; set; }
