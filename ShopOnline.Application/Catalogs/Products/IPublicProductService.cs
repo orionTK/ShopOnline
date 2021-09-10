@@ -1,0 +1,14 @@
+﻿using ShopOnline.Application.Catalogs.Products.DTOs;
+using ShopOnline.Application.DTO;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ShopOnline.Application.Catalogs.Products
+{
+    public interface IProductService
+    {
+        public Task<PageViewModel<ProductViewModel>> GetAllByCategoryId(int categoryId, int pageIndex, int pageSize);
+    }
+}
