@@ -18,7 +18,7 @@ namespace ShopOnline.Data.Configurations
             builder.Property(x => x.Stock).IsRequired();
             builder.Property(x => x.OriginalPrice).HasDefaultValue(0);
             builder.Property(x => x.ViewCount).HasDefaultValue(0);
-            builder.Property(x => x.CreateDated);
+            builder.Property(x => x.DateCreated);
 
 
 

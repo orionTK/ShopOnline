@@ -15,7 +15,6 @@ namespace ShopOnline.Application.Catalogs.Products.DTOs
         public string SeoTitle { get; set; }
         public string SeoAlias { get; set; }
         public string LanguageId { get; set; }
-        public int ViewCount { get; set; }
         public Decimal Price { get; set; }
         public Decimal OriginalPrice { get; set; }
         public int Stock { get; set; }

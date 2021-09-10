@@ -17,7 +17,7 @@ namespace ShopOnline.Data.Configurations
 
             builder.Property(x => x.OrderId).UseIdentityColumn();
 
-            builder.Property(x => x.OrderDate).IsRequired().HasDefaultValueSql("GetDate()");
+            builder.Property(x => x.OrderDate).IsRequired();
 
             builder.Property(x => x.ShipEmail).IsRequired().IsUnicode(false).HasMaxLength(50);
 

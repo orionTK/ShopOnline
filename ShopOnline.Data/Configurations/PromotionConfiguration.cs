@@ -16,7 +16,7 @@ namespace ShopOnline.Data.Configurations
             builder.HasKey(x => x.PromotionId);
             builder.Property(x => x.PromotionId).UseIdentityColumn();
             builder.Property(x => x.PromotionName).IsRequired().HasMaxLength(200);
-            builder.Property(x => x.FromDate).IsRequired().HasDefaultValueSql("GetDate()");
+            builder.Property(x => x.FromDate).IsRequired();
             builder.Property(x => x.ToDate).IsRequired();
             builder.Property(x => x.ApplyForAll);
             builder.Property(x => x.DiscountPercent);

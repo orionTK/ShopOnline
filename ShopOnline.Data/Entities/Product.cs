@@ -15,7 +15,7 @@ namespace ShopOnline.Data.Entities
         public Decimal OriginalPrice { get; set; }
         public int Stock { get; set; }
         public int ViewCount { get; set; }
-        public DateTime CreateDated { get; set; }
+        public DateTime DateCreated { get; set; }
         public bool? IsFeatured { get; set; }
         public List<ProductInCategory> ProductInCategories { get; set; }
 

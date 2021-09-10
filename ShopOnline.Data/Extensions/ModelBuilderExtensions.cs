@@ -90,7 +90,7 @@ namespace ShopOnline.Data.Extensions
                new Product()
                {
                    ProductId=1,
-                   CreateDated = DateTime.Now,
+                   DateCreated = DateTime.Now,
                    OriginalPrice = 100000,
                    Price = 20000,
                    ViewCount = 0,
