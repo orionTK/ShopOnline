@@ -9,10 +9,14 @@ namespace ShopOnline.Application.Catalogs.Products
 {
     public interface IManagerProductService
     {
-        Task<int> Create(ProductViewModel productCreateRequest);
-        Task<int> Update(ProductEditRequest productEditRequest);
+        Task<int> Create(ProductViewModel request);
+        Task<int> Update(ProductUpdateRequest request);
+        Task<bool> UpdatePrice(int productId, decimal newPrice);
+        Task<bool> UpdateStock(int productId, int addQuantity);
+        Task<bool> AddViewCount(int productId);
         Task<int> Delete(int productId);
         Task<List<ProductViewModel>> GetAll();
-        Task<PageViewModel<ProductViewModel>> GetAllPaging(string keyword, int pageIndex, int pageSize);
+        Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request);
+        
     }
 }
