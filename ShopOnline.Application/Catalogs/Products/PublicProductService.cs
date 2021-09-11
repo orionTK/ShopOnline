@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using ShopOnline.ViewModel.DTO;
-using ShopOnline.ViewModel.Catalogs.Products.DTOs;
-using ShopOnline.ViewModel.Catalogs.Products.DTOs.Public;
+using ShopOnline.ViewModel.Catalogs.Products;
 
 namespace ShopOnline.Application.Catalogs.Products
 {
@@ -18,7 +17,7 @@ namespace ShopOnline.Application.Catalogs.Products
             _context = _context;
         }
 
-        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(PGetProductPagingRequest rq)
+        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest rq)
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
@@ -59,6 +58,10 @@ namespace ShopOnline.Application.Catalogs.Products
             return pagedResult;
         }
 
+        public Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetManageProductPagingRequest rq)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopOnline.ViewModel.Catalogs.Products.DTOs
+namespace ShopOnline.ViewModel.Catalogs.Products 
 {
     //Data stranfer object
     public class ProductViewModel
@@ -22,6 +22,6 @@ namespace ShopOnline.ViewModel.Catalogs.Products.DTOs
         public Decimal OriginalPrice { get; set; }
         public int Stock { get; set; }
         public IFormFile ThumbnailImage { get; set; }
-
+        public List<string> Categories { get; set; } = new List<string>();
     }
 }

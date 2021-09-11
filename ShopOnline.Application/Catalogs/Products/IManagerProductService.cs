@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using ShopOnline.ViewModel.Catalog.Products;
-using ShopOnline.ViewModel.Catalogs.Products.DTOs;
+using ShopOnline.ViewModel.Catalogs.Products;
 using ShopOnline.ViewModel.DTO;
 using System;
 using System.Collections.Generic;
@@ -18,10 +18,9 @@ namespace ShopOnline.Application.Catalogs.Products
         Task AddViewCount(int productId); 
         Task<int> Delete(int productId);
         //Task<List<ProductViewModel>> GetAll();
-        Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request);
+        Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
         Task<int> AddImages(int imageId, List<IFormFile> files);
         Task<int> RemoveImages(int imageId);    
-
         Task<int> UpdateImages(int imageId, string caption, bool isDefault);
         Task<List<ProductImageViewModel>> GetListImages(int productId);
 
