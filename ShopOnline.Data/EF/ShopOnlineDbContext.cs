@@ -67,9 +67,9 @@ namespace ShopOnline.Data.EF
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<AppConfig> AppConfigs { get; set; }
-        public DbSet<Slide> Slide { get; set; }
-        public DbSet<ProductImage> ProductImage { get; set; }
-        public DbSet<ProductInCategory> ProductInCategory { get; set; }
+        public DbSet<Slide> Slides { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<ProductInCategory> ProductInCategories { get; set; }
 
 
 
