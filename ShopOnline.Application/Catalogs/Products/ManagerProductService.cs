@@ -1,11 +1,14 @@
-﻿using ShopOnline.Application.Catalogs.Products.DTOs;
-using ShopOnline.Application.DTO;
+﻿using Microsoft.AspNetCore.Http;
 using ShopOnline.Data.EF;
 using ShopOnline.Data.Entities;
 using ShopOnline.Utilies.Exceptions;
+using ShopOnline.ViewModel.Catalogs.Products.DTOs;
+using ShopOnline.ViewModel.DTO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 namespace ShopOnline.Application.Catalogs.Products
@@ -139,6 +142,13 @@ namespace ShopOnline.Application.Catalogs.Products
             return await _context.SaveChangesAsync() > 0;
         }
        
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim(' " ');
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+            return fileName;
+        }
     }
 }
 

@@ -1,12 +1,12 @@
-﻿using ShopOnline.Application.Catalogs.Products.DTOs;
-using ShopOnline.Application.Catalogs.Products.DTOs.Public;
-using ShopOnline.Application.DTO;
-using ShopOnline.Data.EF;
+﻿using ShopOnline.Data.EF;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using ShopOnline.ViewModel.DTO;
+using ShopOnline.ViewModel.Catalogs.Products.DTOs;
+using ShopOnline.ViewModel.Catalogs.Products.DTOs.Public;
 
 namespace ShopOnline.Application.Catalogs.Products
 {
