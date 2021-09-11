@@ -61,31 +61,26 @@ namespace ShopOnline.Application.Catalogs.Products
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<List<ProductViewModel>> GetAll()
-        {
-            
-        }
-
-        public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request)
+        public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest rq)
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
                         join pic in _context.ProductInCategory on p.ProductId equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.CategoryId
                         select new { p, pt, pic };
-            if (!string.IsNullOrEmpty(request.Keyword))
+            if (!string.IsNullOrEmpty(rq.Keyword))
             {
-                query = query.Where(x => x.pt.ProductName.Contains(request.Keyword));
+                query = query.Where(x => x.pt.ProductName.Contains(rq.Keyword));
             }
 
-            if (request.CategoryId.Count > 0)
+            if (rq.CategoryId.Count > 0)
             {
-                query = query.Where(p => request.CategoryId.Contains(p.pic.CategoryId));
+                query = query.Where(p => rq.CategoryId.Contains(p.pic.CategoryId));
             }
 
             int totalRow = query.Count();
-            var data = query.Skip((request.PageIndex - 1) * request.PageSize)
-                .Take(request.PageSize)
+            var data = query.Skip((rq.PageIndex - 1) * rq.PageSize)
+                .Take(rq.PageSize)
                 .Select(x => new ProductViewModel()
                 {
                     ProductId = x.p.ProductId,
@@ -111,23 +106,40 @@ namespace ShopOnline.Application.Catalogs.Products
             return pagedResult;
          }
 
-        public async Task<int> Update(ProductUpdateRequest request)
+        public async Task<bool> Update(ProductUpdateRequest rq)
         {
-            var p = await _context.Products.FindAsync(request.ProductId);
-            if (p == null) throw new ShopOnlineExeptions($"Don't find a product with id: {request.ProductId}");
-            
-
+            var p = await _context.Products.FindAsync(rq.ProductId);
+            var pt =  _context.ProductTranslations.FirstOrDefault(x => x.ProductId == rq.ProductId);
+            if (p == null || pt ==null) throw new ShopOnlineExeptions($"Don't find a product with id: {rq.ProductId}");
+            p.Price = rq.Price;
+            pt.ProductName = rq.ProductName;
+            pt.Description = rq.Description;
+            pt.Details = rq.Details;
+            pt.SeoDescription = rq.SeoDescription;
+            pt.SeoAlias = rq.SeoAlias;
+            pt.SeoTitle = rq.SeoTitle;
+            pt.LanguageId = rq.LanguageId;
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        public Task<bool> UpdatePrice(int productId, decimal newPrice)
+        public async Task<bool> UpdatePrice(int productId, decimal newPrice)
         {
-            throw new NotImplementedException();
+            var p = await _context.Products.FindAsync(productId);
+            if (p == null) throw new ShopOnlineExeptions($"Don't find a product with id: {productId}");
+            p.Price = newPrice;
+
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        public Task<bool> UpdateStock(int productId, int addQuantity)
+        public async Task<bool> UpdateStock(int productId, int addQuantity)
         {
-            throw new NotImplementedException();
+            var p = await _context.Products.FindAsync(productId);
+            if (p == null) throw new ShopOnlineExeptions($"Don't find a product with id: {productId}");
+            p.Stock += addQuantity;
+
+            return await _context.SaveChangesAsync() > 0;
         }
+       
     }
 }
-}
+

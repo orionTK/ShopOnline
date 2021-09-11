@@ -9,6 +9,6 @@ namespace ShopOnline.Application.Catalogs.Products
 {
     public interface IProductService
     {
-        PagedResult<ProductViewModel> GetAllByCategoryId(GetProductPagingRequest rq);
+        Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetProductPagingRequest rq);
     }
 }
