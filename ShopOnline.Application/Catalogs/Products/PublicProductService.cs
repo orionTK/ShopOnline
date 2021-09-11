@@ -9,7 +9,7 @@ namespace ShopOnline.Application.Catalogs.Products
 {
     public class PublicProductService : IProductService
     {
-        public Task<PagedResult<ProductViewModel>> GetAllByCategoryId(int categoryId, int pageIndex, int pageSize)
+        public Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetProductPagingRequest rq)
         {
             throw new NotImplementedException();
         }
