@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopOnline.ViewModel.Catalogs.Products.DTOs
+namespace ShopOnline.ViewModel.Catalogs.Products 
 {
     //Data stranfer object
     public class ProductUpdateRequest

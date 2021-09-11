@@ -4,7 +4,7 @@ using ShopOnline.Data.EF;
 using ShopOnline.Data.Entities;
 using ShopOnline.Utilies.Exceptions;
 using ShopOnline.ViewModel.Catalog.Products;
-using ShopOnline.ViewModel.Catalogs.Products.DTOs;
+using ShopOnline.ViewModel.Catalogs.Products;
 using ShopOnline.ViewModel.DTO;
 using System;
 using System.Collections.Generic;
@@ -91,7 +91,7 @@ namespace ShopOnline.Application.Catalogs.Products
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest rq)
+        public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest rq)
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
@@ -207,7 +207,7 @@ namespace ShopOnline.Application.Catalogs.Products
             throw new NotImplementedException();
         }
 
-        Task<List<ProductImageViewModel>> IManagerProductService.GetListImages(int productId)
+        public Task<List<ProductImageViewModel>> GetListImages(int productId)
         {
             throw new NotImplementedException();
         }
