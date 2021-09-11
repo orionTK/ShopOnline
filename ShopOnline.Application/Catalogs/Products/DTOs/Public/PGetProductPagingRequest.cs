@@ -5,8 +5,8 @@ using System.Text;
 
 namespace ShopOnline.Application.Catalogs.Products.DTOs.Public
 {
-    public class GetProductPagingRequest : PagingRequestBase
+    public class PGetProductPagingRequest : PagingRequestBase
     {
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
     }
 }
