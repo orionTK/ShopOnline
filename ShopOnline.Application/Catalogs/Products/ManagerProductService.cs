@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using ShopOnline.Application.Common;
 using ShopOnline.Data.EF;
 using ShopOnline.Data.Entities;
 using ShopOnline.Utilies.Exceptions;
@@ -16,6 +17,8 @@ namespace ShopOnline.Application.Catalogs.Products
     public class MangerProductService : IManagerProductService
     {
         private readonly ShopOnlineDbContext _context;
+        private readonly IStorageService _storageService;
+
         public MangerProductService(ShopOnlineDbContext _context)
         {
             _context = _context;
@@ -44,6 +47,24 @@ namespace ShopOnline.Application.Catalogs.Products
                     }
                 }
             };
+
+            //Save image
+            if(rq.ThumbnailImage != null)
+            {
+                product.ProductImages = new List<ProductImage>()
+                {
+                    new ProductImage()
+                    {
+                        Caption = "Image for product",
+                        DateCreated = DateTime.Now,
+                        FileSize = rq.ThumbnailImage.Length,
+                        ImagePath = await this.SaveFile(rq.ThumbnailImage),
+                        IsDefault = true,
+                        SortOrder = 1
+
+                    }
+                };
+            }
             _context.Products.Add(product);
             return await _context.SaveChangesAsync();
         }
@@ -59,6 +80,12 @@ namespace ShopOnline.Application.Catalogs.Products
         {
             var p = await _context.Products.FindAsync(productId);
             if (p == null) throw new ShopOnlineExeptions($"Cannot find a product with id: {productId}");
+
+            var thumbnaiImage = _context.ProductImages.Where(x => x.IsDefault == true && x.ProductId == productId);
+            foreach(var i in thumbnaiImage)
+            {
+                await _storageService.DeleteFileAsync(i.ImagePath);
+            }
             _context.Products.Remove(p);
             return await _context.SaveChangesAsync();
         }
@@ -113,6 +140,19 @@ namespace ShopOnline.Application.Catalogs.Products
             var p = await _context.Products.FindAsync(rq.ProductId);
             var pt =  _context.ProductTranslations.FirstOrDefault(x => x.ProductId == rq.ProductId);
             if (p == null || pt ==null) throw new ShopOnlineExeptions($"Don't find a product with id: {rq.ProductId}");
+
+            //Save image
+            if (rq.ThumbnailImage != null)
+            {
+                var thumbnaiImage = _context.ProductImages.FirstOrDefault(x => x.IsDefault == true && x.ProductId == rq.ProductId);
+                if (thumbnaiImage != null)
+                {
+                    thumbnaiImage.FileSize = rq.ThumbnailImage.Length;
+                    thumbnaiImage.ImagePath = await this.SaveFile(rq.ThumbnailImage);
+                    _context.ProductImages.Update(thumbnaiImage);
+                }
+            }
+            
             p.Price = rq.Price;
             pt.ProductName = rq.ProductName;
             pt.Description = rq.Description;
@@ -144,10 +184,25 @@ namespace ShopOnline.Application.Catalogs.Products
        
         private async Task<string> SaveFile(IFormFile file)
         {
-            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim(' " ');
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
             await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
             return fileName;
+        }
+
+        public Task<int> AddImages(int imageId, List<IFormFile> files)
+        {
+            
+        }
+
+        public Task<int> RemoveImages(int imageId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> UpdateImages(int imageId, string caption, bool isDefault)
+        {
+            throw new NotImplementedException();
         }
     }
 }

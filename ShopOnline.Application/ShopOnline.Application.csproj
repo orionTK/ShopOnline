@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <FrameworkReference Include="Microsoft.AspNetCore.App"></FrameworkReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ShopOnline.Data\ShopOnline.Data.csproj" />
     <ProjectReference Include="..\ShopOnline.Utilies\ShopOnline.Utilies.csproj" />
     <ProjectReference Include="..\ShopOnline.ViewModel\ShopOnline.ViewModel.csproj" />
