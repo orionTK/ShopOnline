@@ -3,6 +3,7 @@ using ShopOnline.Application.Common;
 using ShopOnline.Data.EF;
 using ShopOnline.Data.Entities;
 using ShopOnline.Utilies.Exceptions;
+using ShopOnline.ViewModel.Catalog.Products;
 using ShopOnline.ViewModel.Catalogs.Products.DTOs;
 using ShopOnline.ViewModel.DTO;
 using System;
@@ -94,7 +95,7 @@ namespace ShopOnline.Application.Catalogs.Products
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
-                        join pic in _context.ProductInCategory on p.ProductId equals pic.ProductId
+                        join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.CategoryId
                         select new { p, pt, pic };
             if (!string.IsNullOrEmpty(rq.Keyword))
@@ -192,7 +193,8 @@ namespace ShopOnline.Application.Catalogs.Products
 
         public Task<int> AddImages(int imageId, List<IFormFile> files)
         {
-            
+            throw new NotImplementedException();
+
         }
 
         public Task<int> RemoveImages(int imageId)
@@ -201,6 +203,11 @@ namespace ShopOnline.Application.Catalogs.Products
         }
 
         public Task<int> UpdateImages(int imageId, string caption, bool isDefault)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<List<ProductImageViewModel>> IManagerProductService.GetListImages(int productId)
         {
             throw new NotImplementedException();
         }

@@ -22,7 +22,7 @@ namespace ShopOnline.Application.Catalogs.Products
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
-                        join pic in _context.ProductInCategory on p.ProductId equals pic.ProductId
+                        join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.CategoryId
                         select new { p, pt, pic };
             
