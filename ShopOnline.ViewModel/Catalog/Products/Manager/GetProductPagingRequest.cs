@@ -1,9 +1,9 @@
-﻿using ShopOnline.Application.DTO;
+﻿using ShopOnline.ViewModel.DTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopOnline.Application.Catalogs.Products.DTOs
+namespace ShopOnline.ViewModel.Catalogs.Products.DTOs
 {
     public class GetProductPagingRequest :  PagingRequestBase
     {
