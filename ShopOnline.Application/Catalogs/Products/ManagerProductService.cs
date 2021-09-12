@@ -3,6 +3,7 @@ using ShopOnline.Application.Common;
 using ShopOnline.Data.EF;
 using ShopOnline.Data.Entities;
 using ShopOnline.Utilies.Exceptions;
+using ShopOnline.ViewModel.Catalog.ProductImages;
 using ShopOnline.ViewModel.Catalog.Products;
 using ShopOnline.ViewModel.Catalogs.Products;
 using ShopOnline.ViewModel.DTO;
@@ -203,14 +204,14 @@ namespace ShopOnline.Application.Catalogs.Products
                 SortOrder = request.SortOrder
             };
 
-            if (request.ImagePath != null)
+            if (request.ImageFile != null)
             {
                 productImage.ImagePath = await this.SaveFile(request.ImageFile);
                 productImage.FileSize = request.ImageFile.Length;
             }
             _context.ProductImages.Add(productImage);
             await _context.SaveChangesAsync();
-            return productImage.Id;
+            return productImage.ProductImageId;
         }
 
         public async Task<int> RemoveImages(int imageId)
@@ -225,15 +226,25 @@ namespace ShopOnline.Application.Catalogs.Products
             return await _context.SaveChangesAsync();
         }
 
-        public Task<int> UpdateImages(int imageId, string caption, bool isDefault)
+        public async Task<int> UpdateImages(int imageId, ProductImageUpdateRequest request)
         {
-            throw new NotImplementedException();
+            var productImage = await _context.ProductImages.FindAsync(imageId);
+            if (productImage == null)
+                throw new ShopOnlineExeptions($"Can't fint an image with id {imageId}");
+            if (request.ImageFile != null)
+            {
+                productImage.ImagePath = await this.SaveFile(request.ImageFile);
+                productImage.FileSize = request.ImageFile.Length;
+            }
+            _context.ProductImages.Update(productImage);
+            return await _context.SaveChangesAsync();
         }
 
         public Task<List<ProductImageViewModel>> GetListImages(int productId)
         {
             throw new NotImplementedException();
         }
+
     }
 }
 
