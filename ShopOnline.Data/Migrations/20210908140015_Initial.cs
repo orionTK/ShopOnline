@@ -93,7 +93,7 @@ namespace ShopOnline.Data.Migrations
                     OriginalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
                     Stock = table.Column<int>(type: "int", nullable: false),
                     ViewCount = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    CreateDated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsFeatured = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
