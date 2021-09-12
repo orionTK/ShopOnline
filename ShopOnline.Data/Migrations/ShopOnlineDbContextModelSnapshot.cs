@@ -92,6 +92,13 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
+                            RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -137,6 +144,11 @@ namespace ShopOnline.Data.Migrations
                         {
                             Key = "HomeKeyword",
                             Value = "This is keyword of ShopOnlineTK"
+                        },
+                        new
+                        {
+                            Key = "HomeDescription",
+                            Value = "This is description of ShopOnlineTK"
                         });
                 });
 
@@ -196,6 +208,22 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            IsShowOnHome = true,
+                            SortOrder = 1,
+                            Status = 1
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            IsShowOnHome = true,
+                            SortOrder = 2,
+                            Status = 1
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.CategoryTranslation", b =>
@@ -244,6 +272,48 @@ namespace ShopOnline.Data.Migrations
                     b.HasIndex("LanguageId");
 
                     b.ToTable("CategoryTranslations");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryTranslationId = 1,
+                            CategoryId = 1,
+                            CategoryName = "Áo nam",
+                            LanguageId = "vi",
+                            SeoAlias = "ao-nam",
+                            SeoDescription = "Sản phẩm áo thời trang nam",
+                            SeoTitle = "Sản phẩm áo thời trang nam"
+                        },
+                        new
+                        {
+                            CategoryTranslationId = 2,
+                            CategoryId = 1,
+                            CategoryName = "Men Shirt",
+                            LanguageId = "en",
+                            SeoAlias = "men-shirt",
+                            SeoDescription = "The shirt products for men",
+                            SeoTitle = "The shirt products for men"
+                        },
+                        new
+                        {
+                            CategoryTranslationId = 3,
+                            CategoryId = 2,
+                            CategoryName = "Áo nữ",
+                            LanguageId = "vi",
+                            SeoAlias = "ao-nữ",
+                            SeoDescription = "Sản phẩm áo thời trang nữ",
+                            SeoTitle = "Sản phẩm áo thời trang nữ"
+                        },
+                        new
+                        {
+                            CategoryTranslationId = 4,
+                            CategoryId = 2,
+                            CategoryName = "Women Shirt",
+                            LanguageId = "en",
+                            SeoAlias = "women-shirt",
+                            SeoDescription = "The shirt products for women",
+                            SeoTitle = "The shirt products for women"
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Contact", b =>
@@ -297,6 +367,20 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("LanguageId");
 
                     b.ToTable("Languages");
+
+                    b.HasData(
+                        new
+                        {
+                            LanguageId = "vi",
+                            IsDefault = true,
+                            LanguageName = "Tiếng Việt"
+                        },
+                        new
+                        {
+                            LanguageId = "en",
+                            IsDefault = false,
+                            LanguageName = "English"
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Order", b =>
@@ -400,6 +484,17 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            DateCreated = new DateTime(2021, 9, 12, 13, 44, 1, 33, DateTimeKind.Local).AddTicks(4302),
+                            OriginalPrice = 100000m,
+                            Price = 20000m,
+                            Stock = 0,
+                            ViewCount = 0
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.ProductImage", b =>
@@ -456,6 +551,13 @@ namespace ShopOnline.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductInCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            ProductId = 1
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.ProductTranslation", b =>
@@ -512,6 +614,32 @@ namespace ShopOnline.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductTranslations");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductTranslationId = 1,
+                            Description = "Áo sơ mi nam trắng Việt Tiến",
+                            Details = "Áo sơ mi nam trắng Việt Tiến",
+                            LanguageId = "vi",
+                            ProductId = 1,
+                            ProductName = "Áo sơ mi nam trắng Việt Tiến",
+                            SeoAlias = "ao-nam-so-mi-nam-trang-viet-tien",
+                            SeoDescription = "Áo sơ mi nam trắng Việt Tiến",
+                            SeoTitle = "Áo sơ mi nam trắng Việt Tiến"
+                        },
+                        new
+                        {
+                            ProductTranslationId = 2,
+                            Description = "",
+                            Details = "Viet Tien Men Shirt",
+                            LanguageId = "en",
+                            ProductId = 1,
+                            ProductName = "Viet Tien Men Shirt",
+                            SeoAlias = "men-shirt",
+                            SeoDescription = "Viet Tien Men Shirt",
+                            SeoTitle = "Viet Tien Men Shirt"
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Promotion", b =>
@@ -581,6 +709,16 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
+                            ConcurrencyStamp = "2e86567e-5fee-4d8e-a313-049edbe01e38",
+                            Description = "Administrator role",
+                            Name = "admin",
+                            NormalizedName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Slide", b =>
@@ -621,6 +759,68 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("SlideId");
 
                     b.ToTable("Slides");
+
+                    b.HasData(
+                        new
+                        {
+                            SlideId = 1,
+                            Description = "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
+                            Image = "/themes/images/carousel/1.png",
+                            SlideName = "Second Thumbnail label",
+                            SortOrder = 1,
+                            Status = 1,
+                            Url = "#"
+                        },
+                        new
+                        {
+                            SlideId = 2,
+                            Description = "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
+                            Image = "/themes/images/carousel/2.png",
+                            SlideName = "Second Thumbnail label",
+                            SortOrder = 2,
+                            Status = 1,
+                            Url = "#"
+                        },
+                        new
+                        {
+                            SlideId = 3,
+                            Description = "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
+                            Image = "/themes/images/carousel/3.png",
+                            SlideName = "Second Thumbnail label",
+                            SortOrder = 3,
+                            Status = 1,
+                            Url = "#"
+                        },
+                        new
+                        {
+                            SlideId = 4,
+                            Description = "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
+                            Image = "/themes/images/carousel/4.png",
+                            SlideName = "Second Thumbnail label",
+                            SortOrder = 4,
+                            Status = 1,
+                            Url = "#"
+                        },
+                        new
+                        {
+                            SlideId = 5,
+                            Description = "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
+                            Image = "/themes/images/carousel/5.png",
+                            SlideName = "Second Thumbnail label",
+                            SortOrder = 5,
+                            Status = 1,
+                            Url = "#"
+                        },
+                        new
+                        {
+                            SlideId = 6,
+                            Description = "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
+                            Image = "/themes/images/carousel/6.png",
+                            SlideName = "Second Thumbnail label",
+                            SortOrder = 6,
+                            Status = 1,
+                            Url = "#"
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Transaction", b =>
@@ -730,6 +930,27 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "69c153f3-ba3d-4cd9-b886-92b0a0a0ab45",
+                            Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "tedu.international@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Toan",
+                            LastName = "Bach",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "tedu.international@gmail.com",
+                            NormalizedUserName = "admin",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFv0RYaLuvfZb8U88S7/h2UhxCZqlNpkPjl9KmSifyeuIaQO0Vd9rhBJI3daz6HwUw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Cart", b =>
