@@ -6,15 +6,50 @@ using System.Threading.Tasks;
 using System.Linq;
 using ShopOnline.ViewModel.DTO;
 using ShopOnline.ViewModel.Catalogs.Products;
+using ShopOnline.Data.Entities;
 
 namespace ShopOnline.Application.Catalogs.Products
 {
-    public class PublicProductService : IProductService
+    public class PublicProductService : IPublicProductService
     {
         private readonly ShopOnlineDbContext _context;
         public PublicProductService(ShopOnlineDbContext context)
         {
             _context = context;
+        }
+        public async Task<ProductViewModel> GetById(int productId, string languageId)
+        {
+            var product = await _context.Products.FindAsync(productId);
+            var productTranslation = _context.ProductTranslations.FirstOrDefault(x => x.ProductId == productId && x.LanguageId == languageId);
+
+            var categories = (from c in _context.Categories
+                                    join ct in _context.CatogoryTranslations on c.CategoryId equals ct.CategoryId
+                                    join pic in _context.ProductInCategories on c.CategoryId equals pic.CategoryId
+                                    where pic.ProductId == productId && ct.LanguageId == languageId
+                                    select ct.CategoryName).ToList();
+
+            var image = _context.ProductImages.Where(x => x.ProductId == productId && x.IsDefault == true).FirstOrDefault();
+
+
+            var pv = new ProductViewModel()
+            {
+                ProductId = product.ProductId,
+                DateCreated = product.DateCreated,
+                Description = productTranslation != null ? productTranslation.Description : null,
+                LanguageId = productTranslation.LanguageId,
+                Details = productTranslation != null ? productTranslation.Details : null,
+                ProductName = productTranslation != null ? productTranslation.ProductName : null,
+                OriginalPrice = product.OriginalPrice,
+                Price = product.Price,
+                SeoAlias = productTranslation != null ? productTranslation.SeoAlias : null,
+                SeoDescription = productTranslation != null ? productTranslation.SeoDescription : null,
+                SeoTitle = productTranslation != null ? productTranslation.SeoTitle : null,
+                Stock = product.Stock,
+                ViewCount = product.ViewCount,
+                Categories = categories,
+                //ThumbnailImage = image != null ? image.ImagePath : "no-image.jpg"
+            };
+            return pv;
         }
 
         public async Task<List<ProductViewModel>> GetAll()

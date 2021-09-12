@@ -31,7 +31,10 @@ namespace ShopOnline.WebBackEnd
             options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectString)));
 
             //Declare DI
-            services.AddTransient<PublicProductService, PublicProductService>();
+            services.AddTransient<IPublicProductService, PublicProductService>();
+            services.AddTransient<IManagerProductService, ManagerProductService>();
+
+
             services.AddControllersWithViews();
 
             //add swagger
