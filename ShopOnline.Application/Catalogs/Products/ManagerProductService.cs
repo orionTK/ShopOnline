@@ -15,12 +15,12 @@ using System.Text;
 using System.Threading.Tasks;
 namespace ShopOnline.Application.Catalogs.Products
 {
-    public class MangerProductService : IManagerProductService
+    public class ManagerProductService : IManagerProductService
     {
         private readonly ShopOnlineDbContext _context;
         private readonly IStorageService _storageService;
 
-        public MangerProductService(ShopOnlineDbContext _context)
+        public ManagerProductService(ShopOnlineDbContext _context)
         {
             _context = _context;
         }
@@ -67,7 +67,8 @@ namespace ShopOnline.Application.Catalogs.Products
                 };
             }
             _context.Products.Add(product);
-            return await _context.SaveChangesAsync();
+            //return await _context.SaveChangesAsync();
+            return rq.ProductId;
         }
 
         public async Task AddViewCount(int productId)
@@ -191,15 +192,37 @@ namespace ShopOnline.Application.Catalogs.Products
             return fileName;
         }
 
-        public Task<int> AddImages(int imageId, List<IFormFile> files)
+        public async Task<int> AddImages(int productId, ProductImageCreateRequest request)
         {
-            throw new NotImplementedException();
+            var productImage = new ProductImage()
+            {
+                Caption = request.Caption,
+                DateCreated = DateTime.Now,
+                IsDefault = request.IsDefault,
+                ProductId = productId,
+                SortOrder = request.SortOrder
+            };
 
+            if (request.ImagePath != null)
+            {
+                productImage.ImagePath = await this.SaveFile(request.ImageFile);
+                productImage.FileSize = request.ImageFile.Length;
+            }
+            _context.ProductImages.Add(productImage);
+            await _context.SaveChangesAsync();
+            return productImage.Id;
         }
 
-        public Task<int> RemoveImages(int imageId)
+        public async Task<int> RemoveImages(int imageId)
         {
-            throw new NotImplementedException();
+            var productImage = await _context.ProductImages.FindAsync(imageId);
+            if (productImage == null)
+            {
+                throw new ShopOnlineExeptions($"Can't fint an image with id {imageId}");
+
+            }
+            _context.ProductImages.Remove(productImage);
+            return await _context.SaveChangesAsync();
         }
 
         public Task<int> UpdateImages(int imageId, string caption, bool isDefault)
