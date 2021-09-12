@@ -33,6 +33,12 @@ namespace ShopOnline.WebBackEnd
             //Declare DI
             services.AddTransient<PublicProductService, PublicProductService>();
             services.AddControllersWithViews();
+
+            //add swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Swagger Shop Online", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,12 +60,19 @@ namespace ShopOnline.WebBackEnd
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSwagger();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            //add swagger UI
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger Shop Online");
             });
         }
     }
