@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShopOnline.Application.Catalogs.Products;
+using ShopOnline.Application.Common;
 using ShopOnline.Data.EF;
 using ShopOnline.Utilies.Constants;
 using System;
@@ -33,6 +34,7 @@ namespace ShopOnline.WebBackEnd
             //Declare DI
             services.AddTransient<IPublicProductService, PublicProductService>();
             services.AddTransient<IManagerProductService, ManagerProductService>();
+            services.AddTransient<IStorageService, FileStorageService>();
 
 
             services.AddControllersWithViews();
