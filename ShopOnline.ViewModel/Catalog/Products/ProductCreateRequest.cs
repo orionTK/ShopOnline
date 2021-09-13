@@ -11,7 +11,7 @@ namespace ShopOnline.ViewModel.Catalog.Products
         public decimal OriginalPrice { set; get; }
         public int Stock { set; get; }
 
-        public string Name { set; get; }
+        public string ProductName { set; get; }
 
         public string Description { set; get; }
         public string Details { set; get; }

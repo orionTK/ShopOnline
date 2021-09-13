@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using ShopOnline.ViewModel.Catalog.ProductImages;
 using ShopOnline.ViewModel.Catalog.Products;
 using ShopOnline.ViewModel.Catalogs.Products;
 using ShopOnline.ViewModel.DTO;
@@ -11,7 +12,7 @@ namespace ShopOnline.Application.Catalogs.Products
 {
     public interface IManagerProductService
     {
-        Task<int> Create(ProductViewModel rq);
+        Task<int> Create(ProductCreateRequest rq);
         Task<bool> Update(ProductUpdateRequest rq);
         Task<bool> UpdatePrice(int productId, decimal newPrice);
         Task<bool> UpdateStock(int productId, int addQuantity);
@@ -19,9 +20,9 @@ namespace ShopOnline.Application.Catalogs.Products
         Task<int> Delete(int productId);
         //Task<List<ProductViewModel>> GetAll();
         Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
-        Task<int> AddImages(int imageId, List<IFormFile> files);
+        Task<int> AddImages(int productId, ProductImageCreateRequest request);
         Task<int> RemoveImages(int imageId);    
-        Task<int> UpdateImages(int imageId, string caption, bool isDefault);
+        Task<int> UpdateImages(int imageId, ProductImageUpdateRequest request);
         Task<List<ProductImageViewModel>> GetListImages(int productId);
 
     }

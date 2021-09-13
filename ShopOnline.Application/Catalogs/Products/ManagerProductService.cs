@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using ShopOnline.Application.Common;
 using ShopOnline.Data.EF;
 using ShopOnline.Data.Entities;
 using ShopOnline.Utilies.Exceptions;
+using ShopOnline.ViewModel.Catalog.ProductImages;
 using ShopOnline.ViewModel.Catalog.Products;
 using ShopOnline.ViewModel.Catalogs.Products;
 using ShopOnline.ViewModel.DTO;
@@ -20,13 +22,13 @@ namespace ShopOnline.Application.Catalogs.Products
         private readonly ShopOnlineDbContext _context;
         private readonly IStorageService _storageService;
 
-        public ManagerProductService(ShopOnlineDbContext _context)
+        public ManagerProductService(ShopOnlineDbContext context)
         {
-            _context = _context;
+            _context = context;
         }
 
 
-        public async Task<int> Create(ProductViewModel rq)
+        public async Task<int> Create(ProductCreateRequest rq)
         {
             var product = new Product()
             {
@@ -68,7 +70,7 @@ namespace ShopOnline.Application.Catalogs.Products
             }
             _context.Products.Add(product);
             //return await _context.SaveChangesAsync();
-            return rq.ProductId;
+            return product.ProductId;
         }
 
         public async Task AddViewCount(int productId)
@@ -110,7 +112,7 @@ namespace ShopOnline.Application.Catalogs.Products
             }
 
             int totalRow = query.Count();
-            var data = query.Skip((rq.PageIndex - 1) * rq.PageSize)
+            var data = await query.Skip((rq.PageIndex - 1) * rq.PageSize)
                 .Take(rq.PageSize)
                 .Select(x => new ProductViewModel()
                 {
@@ -127,7 +129,7 @@ namespace ShopOnline.Application.Catalogs.Products
                     SeoTitle = x.pt.SeoTitle,
                     Stock = x.p.Stock,
                     ViewCount = x.p.ViewCount
-                }).ToList();
+                }).ToListAsync();
 
             var pagedResult = new PagedResult<ProductViewModel>()
             {
@@ -203,14 +205,14 @@ namespace ShopOnline.Application.Catalogs.Products
                 SortOrder = request.SortOrder
             };
 
-            if (request.ImagePath != null)
+            if (request.ImageFile != null)
             {
                 productImage.ImagePath = await this.SaveFile(request.ImageFile);
                 productImage.FileSize = request.ImageFile.Length;
             }
             _context.ProductImages.Add(productImage);
             await _context.SaveChangesAsync();
-            return productImage.Id;
+            return productImage.ProductImageId;
         }
 
         public async Task<int> RemoveImages(int imageId)
@@ -225,15 +227,36 @@ namespace ShopOnline.Application.Catalogs.Products
             return await _context.SaveChangesAsync();
         }
 
-        public Task<int> UpdateImages(int imageId, string caption, bool isDefault)
+        public async Task<int> UpdateImages(int imageId, ProductImageUpdateRequest request)
         {
-            throw new NotImplementedException();
+            var productImage = await _context.ProductImages.FindAsync(imageId);
+            if (productImage == null)
+                throw new ShopOnlineExeptions($"Can't fint an image with id {imageId}");
+            if (request.ImageFile != null)
+            {
+                productImage.ImagePath = await this.SaveFile(request.ImageFile);
+                productImage.FileSize = request.ImageFile.Length;
+            }
+            _context.ProductImages.Update(productImage);
+            return await _context.SaveChangesAsync();
         }
 
-        public Task<List<ProductImageViewModel>> GetListImages(int productId)
+        public async Task<List<ProductImageViewModel>> GetListImages(int productId)
         {
-            throw new NotImplementedException();
+            return await _context.ProductImages.Where(x => x.ProductId == productId)
+                .Select(x => new ProductImageViewModel()
+                {
+                    Caption = x.Caption,
+                    DateCreated = x.DateCreated,
+                    FileSize = x.FileSize,
+                    ProductImagesId = x.ProductImageId,
+                    ImagePath = x.ImagePath,
+                    IsDefault = x.IsDefault,
+                    ProductId = x.ProductId,
+                    SortOrder = x.SortOrder
+                }).ToListAsync();
         }
+
     }
 }
 

@@ -7,7 +7,8 @@ using System.Linq;
 using ShopOnline.ViewModel.DTO;
 using ShopOnline.ViewModel.Catalogs.Products;
 using ShopOnline.Data.Entities;
-
+using Microsoft.EntityFrameworkCore;
+    
 namespace ShopOnline.Application.Catalogs.Products
 {
     public class PublicProductService : IPublicProductService
@@ -20,15 +21,15 @@ namespace ShopOnline.Application.Catalogs.Products
         public async Task<ProductViewModel> GetById(int productId, string languageId)
         {
             var product = await _context.Products.FindAsync(productId);
-            var productTranslation = _context.ProductTranslations.FirstOrDefault(x => x.ProductId == productId && x.LanguageId == languageId);
+            var productTranslation = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == productId && x.LanguageId == languageId);
 
-            var categories = (from c in _context.Categories
+            var categories = await (from c in _context.Categories
                                     join ct in _context.CatogoryTranslations on c.CategoryId equals ct.CategoryId
                                     join pic in _context.ProductInCategories on c.CategoryId equals pic.CategoryId
                                     where pic.ProductId == productId && ct.LanguageId == languageId
-                                    select ct.CategoryName).ToList();
+                                    select ct.CategoryName).ToListAsync();
 
-            var image = _context.ProductImages.Where(x => x.ProductId == productId && x.IsDefault == true).FirstOrDefault();
+            var image = await _context.ProductImages.Where(x => x.ProductId == productId && x.IsDefault == true).FirstOrDefaultAsync();
 
 
             var pv = new ProductViewModel()
