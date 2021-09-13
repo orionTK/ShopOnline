@@ -12,7 +12,7 @@ namespace ShopOnline.Application.Catalogs.Products
     {
         Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest rq);
         Task<List<ProductViewModel>> GetAll();
-        Task<ProductViewModel> GetById(int productId);
+        Task<ProductViewModel> GetById(int productId, string languageId);
 
     }
 }

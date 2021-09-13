@@ -6,7 +6,7 @@ namespace ShopOnline.ViewModel.Catalog.ProductImages
 {
     public class ProductImageViewModel
     {
-        public int Id { get; set; }
+        public int ProductImagesId { get; set; }
 
         public int ProductId { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using ShopOnline.Application.Common;
 using ShopOnline.Data.EF;
 using ShopOnline.Data.Entities;
@@ -21,13 +22,13 @@ namespace ShopOnline.Application.Catalogs.Products
         private readonly ShopOnlineDbContext _context;
         private readonly IStorageService _storageService;
 
-        public ManagerProductService(ShopOnlineDbContext _context)
+        public ManagerProductService(ShopOnlineDbContext context)
         {
-            _context = _context;
+            _context = context;
         }
 
 
-        public async Task<int> Create(ProductViewModel rq)
+        public async Task<int> Create(ProductCreateRequest rq)
         {
             var product = new Product()
             {
@@ -69,7 +70,7 @@ namespace ShopOnline.Application.Catalogs.Products
             }
             _context.Products.Add(product);
             //return await _context.SaveChangesAsync();
-            return rq.ProductId;
+            return product.ProductId;
         }
 
         public async Task AddViewCount(int productId)
@@ -111,7 +112,7 @@ namespace ShopOnline.Application.Catalogs.Products
             }
 
             int totalRow = query.Count();
-            var data = query.Skip((rq.PageIndex - 1) * rq.PageSize)
+            var data = await query.Skip((rq.PageIndex - 1) * rq.PageSize)
                 .Take(rq.PageSize)
                 .Select(x => new ProductViewModel()
                 {
@@ -128,7 +129,7 @@ namespace ShopOnline.Application.Catalogs.Products
                     SeoTitle = x.pt.SeoTitle,
                     Stock = x.p.Stock,
                     ViewCount = x.p.ViewCount
-                }).ToList();
+                }).ToListAsync();
 
             var pagedResult = new PagedResult<ProductViewModel>()
             {
@@ -240,9 +241,20 @@ namespace ShopOnline.Application.Catalogs.Products
             return await _context.SaveChangesAsync();
         }
 
-        public Task<List<ProductImageViewModel>> GetListImages(int productId)
+        public async Task<List<ProductImageViewModel>> GetListImages(int productId)
         {
-            throw new NotImplementedException();
+            return await _context.ProductImages.Where(x => x.ProductId == productId)
+                .Select(x => new ProductImageViewModel()
+                {
+                    Caption = x.Caption,
+                    DateCreated = x.DateCreated,
+                    FileSize = x.FileSize,
+                    ProductImagesId = x.ProductImageId,
+                    ImagePath = x.ImagePath,
+                    IsDefault = x.IsDefault,
+                    ProductId = x.ProductId,
+                    SortOrder = x.SortOrder
+                }).ToListAsync();
         }
 
     }
