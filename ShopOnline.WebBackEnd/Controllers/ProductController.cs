@@ -60,11 +60,11 @@ namespace ShopOnline.WebBackEnd.Controllers
             var productId = await _managerProductService.Create(request);
             if (productId == 0)
             {
-                return BadRequest(); //400
+                return BadRequest("Can't create a new product"); //400
             }
-            var product = await _publicProductService.GetById(productId, request.LanguageId);
-            //return Ok(); //200
-            return CreatedAtAction(nameof(GetById), new { ProdcutId = productId}, product);
+            //var product = await _publicProductService.GetById(productId, request.LanguageId);
+            return Ok(); //200
+            //return CreatedAtAction(nameof(GetById), new { ProdcutId = productId}, product);
 
         }
 

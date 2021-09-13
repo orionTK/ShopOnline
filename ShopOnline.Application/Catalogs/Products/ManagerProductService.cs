@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ShopOnline.Application.Common;
 using ShopOnline.Data.EF;
 using ShopOnline.Data.Entities;
+using ShopOnline.Utilies.Constants;
 using ShopOnline.Utilies.Exceptions;
 using ShopOnline.ViewModel.Catalog.ProductImages;
 using ShopOnline.ViewModel.Catalog.Products;
@@ -21,24 +22,27 @@ namespace ShopOnline.Application.Catalogs.Products
     {
         private readonly ShopOnlineDbContext _context;
         private readonly IStorageService _storageService;
+        private const string USER_CONTENT_FOLDER_NAME = "user-content";
 
-        public ManagerProductService(ShopOnlineDbContext context)
+        public ManagerProductService(ShopOnlineDbContext context, IStorageService storageService)
         {
             _context = context;
+            _storageService = storageService;
         }
 
 
         public async Task<int> Create(ProductCreateRequest rq)
         {
-            var product = new Product()
+            var languages = _context.Languages;
+
+            //translations
+            var translations = new List<ProductTranslation>();
+            foreach (var language in languages)
             {
-                Price = rq.Price,
-                OriginalPrice = rq.OriginalPrice,
-                Stock = rq.Stock,
-                ViewCount = 0,
-                DateCreated = DateTime.Now,
-                ProductTranslations = new List<ProductTranslation>() { 
-                    new ProductTranslation()
+                //if id = (vi, en)
+                if (language.LanguageId == rq.LanguageId)
+                {
+                    translations.Add(new ProductTranslation()
                     {
                         ProductName = rq.ProductName,
                         Description = rq.Description,
@@ -47,8 +51,44 @@ namespace ShopOnline.Application.Catalogs.Products
                         SeoAlias = rq.SeoAlias,
                         SeoTitle = rq.SeoTitle,
                         LanguageId = rq.LanguageId
-                    }
+                    });
                 }
+                else
+                {
+                    //id other
+                    translations.Add(new ProductTranslation()
+                    {
+                        ProductName = SystemConstants.ProductConstants.NA,
+                        Description = SystemConstants.ProductConstants.NA,
+                        Details = SystemConstants.ProductConstants.NA,
+                        SeoAlias = SystemConstants.ProductConstants.NA,
+                        SeoDescription = SystemConstants.ProductConstants.NA,
+                        SeoTitle = SystemConstants.ProductConstants.NA,
+                        LanguageId = language.LanguageId
+                    });
+                }
+            }
+            var product = new Product()
+            {
+                Price = rq.Price,
+                OriginalPrice = rq.OriginalPrice,
+                Stock = rq.Stock,
+                ViewCount = 0,
+                DateCreated = DateTime.Now,
+                ProductTranslations = translations
+
+                 //new List<ProductTranslation>() {
+                 //   new ProductTranslation()
+                 //   {
+                 //       ProductName = rq.ProductName,
+                 //       Description = rq.Description,
+                 //       Details = rq.Details,
+                 //       SeoDescription = rq.SeoDescription,
+                 //       SeoAlias = rq.SeoAlias,
+                 //       SeoTitle = rq.SeoTitle,
+                 //       LanguageId = rq.LanguageId
+                 //   }
+                
             };
 
             //Save image
@@ -69,7 +109,7 @@ namespace ShopOnline.Application.Catalogs.Products
                 };
             }
             _context.Products.Add(product);
-            //return await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return product.ProductId;
         }
 
