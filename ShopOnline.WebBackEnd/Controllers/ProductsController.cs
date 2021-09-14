@@ -43,15 +43,25 @@ namespace ShopOnline.WebBackEnd.Controllers
 
         }
 
-        [HttpGet("get-all-category/{languageId}")]
-        public async Task<IActionResult> GetAllPaging([FromQuery]string languageId, GetPublicProductPagingRequest rq)
+        [HttpGet("get-all-by-category-id/{languageId}")]
+        public async Task<IActionResult> GetAllByCategoryId([FromQuery] string languageId)
         {
-            var products = _publicProductService.GetAllByCategoryId(languageId,rq);
-            return Ok(products.Result);
+            var product = _publicProductService.GetAll( languageId);
+            return Ok(product.Result);
 
         }
 
-        
+        [HttpGet("get-all-category/{languageId}")]
+        public async Task<IActionResult> GetAllPaging([FromForm] GetPublicProductPagingRequest rq)
+        {
+            var product = _publicProductService.GetAll(rq.languageId);
+
+            //var products = _publicProductService.GetAllByCategoryId(languageId, rq);
+            return Ok(product.Result);
+
+        }
+
+
 
         [HttpPost("create-product")]
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
@@ -67,7 +77,7 @@ namespace ShopOnline.WebBackEnd.Controllers
             }
             var product = await _publicProductService.GetById(productId, request.LanguageId);
             //return Ok(); //200
-            return CreatedAtAction(nameof(GetById), new { ProdcutId = productId}, product);
+            return CreatedAtAction(nameof(GetById), new { ProdcutId = productId }, product);
 
         }
 
@@ -87,7 +97,7 @@ namespace ShopOnline.WebBackEnd.Controllers
             return Ok();
         }
         [HttpPut("update-price/{productId}/{newPrice}")]
-        public async Task<IActionResult> UpdatePrice([FromQuery]int productId, decimal newPrice)
+        public async Task<IActionResult> UpdatePrice([FromQuery] int productId, decimal newPrice)
         {
             var status = await _managerProductService.UpdatePrice(productId, newPrice);
             if (status == false)
