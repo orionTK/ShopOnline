@@ -77,22 +77,22 @@ namespace ShopOnline.Application.Catalogs.Products
                 DateCreated = DateTime.Now,
                 ProductTranslations = translations
 
-                 //new List<ProductTranslation>() {
-                 //   new ProductTranslation()
-                 //   {
-                 //       ProductName = rq.ProductName,
-                 //       Description = rq.Description,
-                 //       Details = rq.Details,
-                 //       SeoDescription = rq.SeoDescription,
-                 //       SeoAlias = rq.SeoAlias,
-                 //       SeoTitle = rq.SeoTitle,
-                 //       LanguageId = rq.LanguageId
-                 //   }
-                
+                //new List<ProductTranslation>() {
+                //   new ProductTranslation()
+                //   {
+                //       ProductName = rq.ProductName,
+                //       Description = rq.Description,
+                //       Details = rq.Details,
+                //       SeoDescription = rq.SeoDescription,
+                //       SeoAlias = rq.SeoAlias,
+                //       SeoTitle = rq.SeoTitle,
+                //       LanguageId = rq.LanguageId
+                //   }
+
             };
 
             //Save image
-            if(rq.ThumbnailImage != null)
+            if (rq.ThumbnailImage != null)
             {
                 product.ProductImages = new List<ProductImage>()
                 {
@@ -126,7 +126,7 @@ namespace ShopOnline.Application.Catalogs.Products
             if (p == null) throw new ShopOnlineExeptions($"Cannot find a product with id: {productId}");
 
             var thumbnaiImage = _context.ProductImages.Where(x => x.IsDefault == true && x.ProductId == productId);
-            foreach(var i in thumbnaiImage)
+            foreach (var i in thumbnaiImage)
             {
                 await _storageService.DeleteFileAsync(i.ImagePath);
             }
@@ -177,13 +177,13 @@ namespace ShopOnline.Application.Catalogs.Products
                 Items = data
             };
             return pagedResult;
-         }
+        }
 
         public async Task<bool> Update(ProductUpdateRequest rq)
         {
             var p = await _context.Products.FindAsync(rq.ProductId);
-            var pt =  _context.ProductTranslations.FirstOrDefault(x => x.ProductId == rq.ProductId);
-            if (p == null || pt ==null) throw new ShopOnlineExeptions($"Don't find a product with id: {rq.ProductId}");
+            var pt = _context.ProductTranslations.FirstOrDefault(x => x.ProductId == rq.ProductId);
+            if (p == null || pt == null) throw new ShopOnlineExeptions($"Don't find a product with id: {rq.ProductId}");
 
             //Save image
             if (rq.ThumbnailImage != null)
@@ -196,9 +196,9 @@ namespace ShopOnline.Application.Catalogs.Products
                     _context.ProductImages.Update(thumbnaiImage);
                 }
             }
-            
+
             p.Price = rq.Price != null ? rq.Price : p.Price;
-            pt.ProductName = rq.ProductName ;
+            pt.ProductName = rq.ProductName;
             pt.Description = rq.Description;
             pt.Details = rq.Details;
             pt.SeoDescription = rq.SeoDescription;
@@ -225,7 +225,7 @@ namespace ShopOnline.Application.Catalogs.Products
 
             return await _context.SaveChangesAsync() > 0;
         }
-       
+
         private async Task<string> SaveFile(IFormFile file)
         {
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
@@ -305,7 +305,8 @@ namespace ShopOnline.Application.Catalogs.Products
         {
             var pm = await _context.ProductImages.FindAsync(imageId);
             if (pm == null) throw new ShopOnlineExeptions($"Don't find image with image id: {imageId}");
-            return new ProductImageViewModel() { 
+            return new ProductImageViewModel()
+            {
                 Caption = pm.Caption,
                 DateCreated = pm.DateCreated,
                 FileSize = pm.FileSize,

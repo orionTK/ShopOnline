@@ -8,7 +8,7 @@ using ShopOnline.ViewModel.DTO;
 using ShopOnline.ViewModel.Catalogs.Products;
 using ShopOnline.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-    
+
 namespace ShopOnline.Application.Catalogs.Products
 {
     public class PublicProductService : IPublicProductService
@@ -49,7 +49,7 @@ namespace ShopOnline.Application.Catalogs.Products
                 Stock = product.Stock,
                 ViewCount = product.ViewCount,
                 Categories = categories
-                
+
                 //ThumbnailImage = image != null ? image.ImagePath : "no-image.jpg"
             };
             return pv;
@@ -62,26 +62,26 @@ namespace ShopOnline.Application.Catalogs.Products
                         join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
                         //join c in _context.Categories on pic.CategoryId equals c.CategoryId
                         where pt.LanguageId == languageId
-                        select new { p, pt};
+                        select new { p, pt };
 
             int totalRow = query.Count();
             var data = query.Select(x => new ProductViewModel()
-                {
-                    ProductId = x.p.ProductId,  
-                    ProductName = x.pt.ProductName,
-                    Description = x.pt.Description,
-                    Details = x.pt.Details,
-                    OriginalPrice = x.p.OriginalPrice,
-                    DateCreated = x.p.DateCreated,
-                    LanguageId = x.pt.LanguageId,
-                    Price = x.p.Price,
-                    SeoAlias = x.pt.SeoAlias,
-                    SeoDescription = x.pt.SeoDescription,
-                    SeoTitle = x.pt.SeoTitle,
-                    Stock = x.p.Stock,
-                    ViewCount = x.p.ViewCount,
-                    
-                }).ToList();
+            {
+                ProductId = x.p.ProductId,
+                ProductName = x.pt.ProductName,
+                Description = x.pt.Description,
+                Details = x.pt.Details,
+                OriginalPrice = x.p.OriginalPrice,
+                DateCreated = x.p.DateCreated,
+                LanguageId = x.pt.LanguageId,
+                Price = x.p.Price,
+                SeoAlias = x.pt.SeoAlias,
+                SeoDescription = x.pt.SeoDescription,
+                SeoTitle = x.pt.SeoTitle,
+                Stock = x.p.Stock,
+                ViewCount = x.p.ViewCount,
+
+            }).ToList();
 
             var pagedResult = new PagedResult<ProductViewModel>()
             {
@@ -99,7 +99,7 @@ namespace ShopOnline.Application.Catalogs.Products
                         join c in _context.Categories on pic.CategoryId equals c.CategoryId
                         where pt.LanguageId == languageId
                         select new { p, pt, pic };
-            
+
             if (rq.CategoryId.HasValue && rq.CategoryId > 0)
             {
                 query = query.Where(p => p.pic.CategoryId == rq.CategoryId);
@@ -133,7 +133,8 @@ namespace ShopOnline.Application.Catalogs.Products
             return pagedResult;
         }
 
-        
+
+      
     }
 
 }

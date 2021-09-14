@@ -16,12 +16,12 @@ namespace ShopOnline.Application.Catalogs.Products
         Task<bool> Update(ProductUpdateRequest rq);
         Task<bool> UpdatePrice(int productId, decimal newPrice);
         Task<bool> UpdateStock(int productId, int addQuantity);
-        Task AddViewCount(int productId); 
+        Task AddViewCount(int productId);
         Task<int> Delete(int productId);
         //Task<List<ProductViewModel>> GetAll();
         Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
         Task<int> AddImages(int productId, ProductImageCreateRequest request);
-        Task<int> RemoveImages(int imageId);    
+        Task<int> RemoveImages(int imageId);
         Task<int> UpdateImages(int imageId, ProductImageUpdateRequest request);
         Task<List<ProductImageViewModel>> GetListImages(int productId);
         Task<ProductImageViewModel> GetImageById(int imageId);
