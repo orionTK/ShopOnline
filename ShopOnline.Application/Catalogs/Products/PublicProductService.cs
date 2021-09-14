@@ -18,6 +18,7 @@ namespace ShopOnline.Application.Catalogs.Products
         {
             _context = context;
         }
+
         public async Task<ProductViewModel> GetById(int productId, string languageId)
         {
             var product = await _context.Products.FindAsync(productId);
@@ -47,19 +48,20 @@ namespace ShopOnline.Application.Catalogs.Products
                 SeoTitle = productTranslation != null ? productTranslation.SeoTitle : null,
                 Stock = product.Stock,
                 ViewCount = product.ViewCount,
-                Categories = categories,
+                Categories = categories
+                
                 //ThumbnailImage = image != null ? image.ImagePath : "no-image.jpg"
             };
             return pv;
         }
 
-        public async Task<List<ProductViewModel>> GetAll()
+        public async Task<PagedResult<ProductViewModel>> GetAll()
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
-                        join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
-                        join c in _context.Categories on pic.CategoryId equals c.CategoryId
-                        select new { p, pt, pic };
+                        //join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
+                        //join c in _context.Categories on pic.CategoryId equals c.CategoryId
+                        select new { p, pt};
 
             int totalRow = query.Count();
             var data = query.Select(x => new ProductViewModel()
@@ -76,7 +78,8 @@ namespace ShopOnline.Application.Catalogs.Products
                     SeoDescription = x.pt.SeoDescription,
                     SeoTitle = x.pt.SeoTitle,
                     Stock = x.p.Stock,
-                    ViewCount = x.p.ViewCount
+                    ViewCount = x.p.ViewCount,
+                    
                 }).ToList();
 
             var pagedResult = new PagedResult<ProductViewModel>()
@@ -84,7 +87,7 @@ namespace ShopOnline.Application.Catalogs.Products
                 TotalRecord = totalRow,
                 Items = data
             };
-            return data;
+            return pagedResult;
         }
 
         public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest rq)

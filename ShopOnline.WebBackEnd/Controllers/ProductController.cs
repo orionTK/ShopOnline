@@ -32,16 +32,8 @@ namespace ShopOnline.WebBackEnd.Controllers
 
         }
 
-        [HttpGet("get-all-category/{id}")]
-        public async Task<IActionResult> GetAllByCategoryId(GetPublicProductPagingRequest rq)
-        {
-            var products = _publicProductService.GetAllByCategoryId(rq);
-            return Ok(products);
-
-        }
-
         [HttpGet("get-by-id/{productId}")]
-        public async Task<IActionResult> GetById([FromQuery]int productId, string languageId)
+        public async Task<IActionResult> GetById([FromQuery] int productId, string languageId)
         {
             var product = _publicProductService.GetById(productId, languageId);
             if (product == null)
@@ -49,6 +41,16 @@ namespace ShopOnline.WebBackEnd.Controllers
             return Ok(product);
 
         }
+
+        [HttpGet("get-all-category/{id}")]
+        public async Task<IActionResult> GetAllByCategoryId( GetPublicProductPagingRequest rq)
+        {
+            var products = _publicProductService.GetAllByCategoryId(rq);
+            return Ok(products);
+
+        }
+
+        
 
         [HttpPost("create-product")]
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
@@ -62,14 +64,14 @@ namespace ShopOnline.WebBackEnd.Controllers
             {
                 return BadRequest("Can't create a new product"); //400
             }
-            //var product = await _publicProductService.GetById(productId, request.LanguageId);
-            return Ok(); //200
-            //return CreatedAtAction(nameof(GetById), new { ProdcutId = productId}, product);
+            var product = await _publicProductService.GetById(productId, request.LanguageId);
+            //return Ok(); //200
+            return CreatedAtAction(nameof(GetById), new { ProdcutId = productId}, product);
 
         }
 
         [HttpPut("update-product")]
-        public async Task<IActionResult> Update([FromBody]ProductUpdateRequest request)
+        public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
         {
             var status = await _managerProductService.Update(request);
             if (status == false)
@@ -112,7 +114,7 @@ namespace ShopOnline.WebBackEnd.Controllers
         }
 
         [HttpGet("get-all-paging")]
-        public async Task<IActionResult> GetAllPaging(GetManageProductPagingRequest rq)
+        public async Task<IActionResult> GetAllPaging([FromForm] GetManageProductPagingRequest rq)
         {
             PagedResult<ProductViewModel> pagedResult = await _managerProductService.GetAllPaging(rq);
             return Ok(pagedResult);

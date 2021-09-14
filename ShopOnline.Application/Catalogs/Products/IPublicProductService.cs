@@ -11,7 +11,7 @@ namespace ShopOnline.Application.Catalogs.Products
     public interface IPublicProductService
     {
         Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest rq);
-        Task<List<ProductViewModel>> GetAll();
+        Task<PagedResult<ProductViewModel>> GetAll();
         Task<ProductViewModel> GetById(int productId, string languageId);
 
     }
