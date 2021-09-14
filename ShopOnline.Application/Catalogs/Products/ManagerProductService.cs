@@ -236,6 +236,8 @@ namespace ShopOnline.Application.Catalogs.Products
 
         public async Task<int> AddImages(int productId, ProductImageCreateRequest request)
         {
+            if (await _context.ProductImages.FindAsync(productId) == null)
+                throw new ShopOnlineExeptions($"Don't find productId: {productId}");
             var productImage = new ProductImage()
             {
                 Caption = request.Caption,
@@ -260,7 +262,7 @@ namespace ShopOnline.Application.Catalogs.Products
             var productImage = await _context.ProductImages.FindAsync(imageId);
             if (productImage == null)
             {
-                throw new ShopOnlineExeptions($"Can't fint an image with id {imageId}");
+                throw new ShopOnlineExeptions($"Can't fint an image with id: {imageId}");
 
             }
             _context.ProductImages.Remove(productImage);
@@ -271,7 +273,10 @@ namespace ShopOnline.Application.Catalogs.Products
         {
             var productImage = await _context.ProductImages.FindAsync(imageId);
             if (productImage == null)
-                throw new ShopOnlineExeptions($"Can't fint an image with id {imageId}");
+                throw new ShopOnlineExeptions($"Can't fint an image with id: {imageId}");
+            productImage.Caption = request.Caption;
+            productImage.IsDefault = request.IsDefault;
+            productImage.SortOrder = request.SortOrder;
             if (request.ImageFile != null)
             {
                 productImage.ImagePath = await this.SaveFile(request.ImageFile);
@@ -295,6 +300,21 @@ namespace ShopOnline.Application.Catalogs.Products
                     ProductId = x.ProductId,
                     SortOrder = x.SortOrder
                 }).ToListAsync();
+        }
+        public async Task<ProductImageViewModel> GetImageById(int imageId)
+        {
+            var pm = await _context.ProductImages.FindAsync(imageId);
+            if (pm == null) throw new ShopOnlineExeptions($"Don't find image with image id: {imageId}");
+            return new ProductImageViewModel() { 
+                Caption = pm.Caption,
+                DateCreated = pm.DateCreated,
+                FileSize = pm.FileSize,
+                ImagePath = pm.ImagePath,
+                IsDefault = pm.IsDefault,
+                ProductId = pm.ProductId,
+                ProductImagesId = pm.ProductId,
+                SortOrder = pm.SortOrder
+            };
         }
 
     }

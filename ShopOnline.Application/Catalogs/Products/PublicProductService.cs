@@ -55,12 +55,13 @@ namespace ShopOnline.Application.Catalogs.Products
             return pv;
         }
 
-        public async Task<PagedResult<ProductViewModel>> GetAll()
+        public async Task<PagedResult<ProductViewModel>> GetAll(string languageId)
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
-                        //join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
+                        join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
                         //join c in _context.Categories on pic.CategoryId equals c.CategoryId
+                        where pt.LanguageId == languageId
                         select new { p, pt};
 
             int totalRow = query.Count();
@@ -90,12 +91,13 @@ namespace ShopOnline.Application.Catalogs.Products
             return pagedResult;
         }
 
-        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest rq)
+        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(string languageId, GetPublicProductPagingRequest rq)
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
                         join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.CategoryId
+                        where pt.LanguageId == languageId
                         select new { p, pt, pic };
             
             if (rq.CategoryId.HasValue && rq.CategoryId > 0)
