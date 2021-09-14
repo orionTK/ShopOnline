@@ -24,6 +24,7 @@ namespace ShopOnline.Application.Catalogs.Products
         Task<int> RemoveImages(int imageId);    
         Task<int> UpdateImages(int imageId, ProductImageUpdateRequest request);
         Task<List<ProductImageViewModel>> GetListImages(int productId);
+        Task<ProductImageViewModel> GetImageById(int imageId);
 
     }
 }

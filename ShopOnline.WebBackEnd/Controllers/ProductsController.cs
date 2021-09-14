@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopOnline.Application.Catalogs.Products;
+using ShopOnline.ViewModel.Catalog.ProductImages;
 using ShopOnline.ViewModel.Catalog.Products;
 using ShopOnline.ViewModel.Catalogs.Products;
 using ShopOnline.ViewModel.DTO;
@@ -13,40 +14,40 @@ namespace ShopOnline.WebBackEnd.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly IPublicProductService _publicProductService;
         private readonly IManagerProductService _managerProductService;
 
-        public ProductController(IPublicProductService publicProductService, IManagerProductService managerProductService)
+        public ProductsController(IPublicProductService publicProductService, IManagerProductService managerProductService)
         {
             _publicProductService = publicProductService;
             _managerProductService = managerProductService;
         }
 
-        [HttpGet("get-all")]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("get-all/{languageId}")]
+        public async Task<IActionResult> GetAll(string languageId)
         {
-            var products = _publicProductService.GetAll();
+            var products = _publicProductService.GetAll(languageId);
             return Ok(products);
 
         }
 
-        [HttpGet("get-by-id/{productId}")]
+        [HttpGet("get-by-id/{productId}/{languageId}")]
         public async Task<IActionResult> GetById([FromQuery] int productId, string languageId)
         {
             var product = _publicProductService.GetById(productId, languageId);
             if (product == null)
                 return BadRequest("Can't find product");
-            return Ok(product);
+            return Ok(product.Result);
 
         }
 
-        [HttpGet("get-all-category/{id}")]
-        public async Task<IActionResult> GetAllByCategoryId( GetPublicProductPagingRequest rq)
+        [HttpGet("get-all-category/{languageId}")]
+        public async Task<IActionResult> GetAllPaging([FromQuery]string languageId, GetPublicProductPagingRequest rq)
         {
-            var products = _publicProductService.GetAllByCategoryId(rq);
-            return Ok(products);
+            var products = _publicProductService.GetAllByCategoryId(languageId,rq);
+            return Ok(products.Result);
 
         }
 
@@ -73,6 +74,10 @@ namespace ShopOnline.WebBackEnd.Controllers
         [HttpPut("update-product")]
         public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var status = await _managerProductService.Update(request);
             if (status == false)
             {
@@ -105,7 +110,7 @@ namespace ShopOnline.WebBackEnd.Controllers
             return Ok();
         }
 
-        [HttpPost("add-viewcount/{id}")]
+        [HttpPost("add-viewcount/{productId}")]
         public async Task<IActionResult> AddViewCount(int productId)
         {
             await _managerProductService.AddViewCount(productId);
@@ -113,14 +118,8 @@ namespace ShopOnline.WebBackEnd.Controllers
 
         }
 
-        [HttpGet("get-all-paging")]
-        public async Task<IActionResult> GetAllPaging([FromForm] GetManageProductPagingRequest rq)
-        {
-            PagedResult<ProductViewModel> pagedResult = await _managerProductService.GetAllPaging(rq);
-            return Ok(pagedResult);
-        }
 
-        [HttpPut("update-stock/{id}/{productId}")]
+        [HttpPatch("update-stock/{id}/{productId}")]
         public async Task<IActionResult> UpdateStock(int productId, int addQuantity)
         {
             var result = await _managerProductService.UpdateStock(productId, addQuantity);
