@@ -197,8 +197,8 @@ namespace ShopOnline.Application.Catalogs.Products
                 }
             }
             
-            p.Price = rq.Price;
-            pt.ProductName = rq.ProductName;
+            p.Price = rq.Price != null ? rq.Price : p.Price;
+            pt.ProductName = rq.ProductName ;
             pt.Description = rq.Description;
             pt.Details = rq.Details;
             pt.SeoDescription = rq.SeoDescription;

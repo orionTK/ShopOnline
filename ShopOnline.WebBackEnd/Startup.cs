@@ -39,6 +39,11 @@ namespace ShopOnline.WebBackEnd
 
             services.AddControllersWithViews();
 
+            //fix bug 500
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             //add swagger
             services.AddSwaggerGen(c =>
             {
