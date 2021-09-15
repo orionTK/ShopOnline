@@ -28,7 +28,7 @@ namespace ShopOnline.WebBackEnd.Controllers
         [HttpGet("get-all/{languageId}")]
         public async Task<IActionResult> GetAll(string languageId)
         {
-            var products = _publicProductService.GetAll(languageId);
+            var products = await _publicProductService.GetAll(languageId);
             return Ok(products);
 
         }
@@ -36,7 +36,7 @@ namespace ShopOnline.WebBackEnd.Controllers
         [HttpGet("get-by-id/{productId}/{languageId}")]
         public async Task<IActionResult> GetById([FromQuery] int productId, string languageId)
         {
-            var product = _publicProductService.GetById(productId, languageId);
+            var product =  _publicProductService.GetById(productId, languageId);
             if (product == null)
                 return BadRequest("Can't find product");
             return Ok(product.Result);

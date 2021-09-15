@@ -1,13 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShopOnline.Application.Catalogs.Products;
 using ShopOnline.Application.Common;
+using ShopOnline.Application.Users.System;
 using ShopOnline.Data.EF;
+using ShopOnline.Data.Entities;
 using ShopOnline.Utilies.Constants;
 using System;
 using System.Collections.Generic;
@@ -31,10 +34,21 @@ namespace ShopOnline.WebBackEnd
             services.AddDbContext<ShopOnlineDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectString)));
 
+            //config to use UserStore :>
+            services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<ShopOnlineDbContext>()
+                .AddDefaultTokenProviders();
+
             //Declare DI
             services.AddTransient<IPublicProductService, PublicProductService>();
             services.AddTransient<IManagerProductService, ManagerProductService>();
             services.AddTransient<IStorageService, FileStorageService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<UserManager<User>, UserManager<User>>();
+            services.AddTransient<SignInManager<User>, SignInManager<User>>();
+            services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
+            services.AddTransient<IUserService, UserService>();
+
 
 
             services.AddControllersWithViews();
