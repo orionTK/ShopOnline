@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopOnline.Application.Catalogs.Products;
@@ -13,6 +14,7 @@ namespace ShopOnline.WebBackEnd.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductImagesController : ControllerBase
     {
         private readonly IPublicProductService _publicProductService;

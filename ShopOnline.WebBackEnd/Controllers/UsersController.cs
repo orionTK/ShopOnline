@@ -31,7 +31,7 @@ namespace ShopOnline.WebBackEnd.Controllers
             }
             var result = await _userService.Authencate(rq);
             if (string.IsNullOrEmpty(result))
-                return BadRequest("User or passord is incorrect.");
+                return BadRequest("User or password is incorrect.");
             return Ok(new { token = result });
         }
 

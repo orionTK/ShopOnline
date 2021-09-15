@@ -45,7 +45,7 @@ namespace ShopOnline.Data.EF
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogins").HasKey(x=>x.UserId);
 
             //modelBuilder.ApplyConfiguration(new PromotionConfiguration());
-            //modelBuilder.Seed();
+            modelBuilder.Seed();
             //data-seeding
             //modelBuilder.Entity<AppConfig>().HasData(
             //    new AppConfig() { Key = "HomeTitle", Value = "This is home page of ShopOnlineTK" },
