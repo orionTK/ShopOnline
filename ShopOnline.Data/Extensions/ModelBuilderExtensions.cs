@@ -142,16 +142,16 @@ namespace ShopOnline.Data.Extensions
             modelBuilder.Entity<User>().HasData(new User
             {
                 Id = adminId,
-                UserName = "admin",
-                NormalizedUserName = "admin",
-                Email = "tedu.international@gmail.com",
-                NormalizedEmail = "tedu.international@gmail.com",
+                UserName = "meo",
+                NormalizedUserName = "meo",
+                Email = "meo@gmail.com",
+                NormalizedEmail = "meo@gmail.com",
                 EmailConfirmed = true,
-                PasswordHash = hasher.HashPassword(null, "Abcd1234$"),
+                PasswordHash = hasher.HashPassword(null, "123456$"),
                 SecurityStamp = string.Empty,
-                FirstName = "Toan",
-                LastName = "Bach",
-                Dob = new DateTime(2020, 01, 31)
+                FirstName = "meo",
+                LastName = "meo",
+                Dob = new DateTime(1998, 02, 03)
             });
 
             modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>

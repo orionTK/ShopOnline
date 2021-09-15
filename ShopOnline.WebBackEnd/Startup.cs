@@ -34,6 +34,11 @@ namespace ShopOnline.WebBackEnd
             services.AddDbContext<ShopOnlineDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectString)));
 
+            //config to use UserStore :>
+            services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<ShopOnlineDbContext>()
+                .AddDefaultTokenProviders();
+
             //Declare DI
             services.AddTransient<IPublicProductService, PublicProductService>();
             services.AddTransient<IManagerProductService, ManagerProductService>();
@@ -41,6 +46,8 @@ namespace ShopOnline.WebBackEnd
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<UserManager<User>, UserManager<User>>();
             services.AddTransient<SignInManager<User>, SignInManager<User>>();
+            services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
+            services.AddTransient<IUserService, UserService>();
 
 
 
