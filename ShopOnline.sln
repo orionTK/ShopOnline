@@ -14,11 +14,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopOnline.Data", "ShopOnli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopOnline.Application", "ShopOnline.Application\ShopOnline.Application.csproj", "{4792A8B4-F064-4553-8216-D25F28BC20E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.Utilies", "ShopOnline.Utilies\ShopOnline.Utilies.csproj", "{C9391159-78DB-4984-955C-C531CFF0A55D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopOnline.Utilies", "ShopOnline.Utilies\ShopOnline.Utilies.csproj", "{C9391159-78DB-4984-955C-C531CFF0A55D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.ViewModel", "ShopOnline.ViewModel\ShopOnline.ViewModel.csproj", "{70A9D6A2-299E-4B38-81B1-6555C39426ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopOnline.ViewModel", "ShopOnline.ViewModel\ShopOnline.ViewModel.csproj", "{70A9D6A2-299E-4B38-81B1-6555C39426ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.WebBackEnd", "ShopOnline.WebBackEnd\ShopOnline.WebBackEnd.csproj", "{2529806B-A9D7-4D71-8031-A79DAD7F3965}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopOnline.WebBackEnd", "ShopOnline.WebBackEnd\ShopOnline.WebBackEnd.csproj", "{2529806B-A9D7-4D71-8031-A79DAD7F3965}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.AdminApp", "ShopOnline.AdminApp\ShopOnline.AdminApp.csproj", "{2499519F-B046-4A16-811E-6CE7A586F647}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{2529806B-A9D7-4D71-8031-A79DAD7F3965}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2529806B-A9D7-4D71-8031-A79DAD7F3965}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2529806B-A9D7-4D71-8031-A79DAD7F3965}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2499519F-B046-4A16-811E-6CE7A586F647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2499519F-B046-4A16-811E-6CE7A586F647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2499519F-B046-4A16-811E-6CE7A586F647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2499519F-B046-4A16-811E-6CE7A586F647}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
