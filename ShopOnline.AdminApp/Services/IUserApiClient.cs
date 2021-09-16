@@ -1,14 +1,16 @@
 ﻿using ShopOnline.ViewModel.System.Users;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace ShopOnline.Application.System.Users
+namespace ShopOnline.AdminApp.Services
 {
-    public interface IUserService
+    public interface IUserApiClient
     {
-        Task<string> Authencate(LoginRequest rq);
+       
+        Task<string> Authenticate(LoginRequest rq);
         Task<bool> Register(RegisterRequest rq);
     }
 }

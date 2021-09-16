@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopOnline.ViewModel.Users.System
+namespace ShopOnline.ViewModel.System.Users
 {
     public class LoginRequest
     {

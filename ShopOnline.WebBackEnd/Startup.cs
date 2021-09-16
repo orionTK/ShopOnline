@@ -13,16 +13,18 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ShopOnline.Application.Catalogs.Products;
 using ShopOnline.Application.Common;
-using ShopOnline.Application.Users.System;
+using ShopOnline.ViewModel.System.Users;
+
 using ShopOnline.Data.EF;
 using ShopOnline.Data.Entities;
 using ShopOnline.Utilies.Constants;
 using ShopOnline.ViewModel.System.Users;
-using ShopOnline.ViewModel.Users.System;
+using ShopOnline.ViewModel.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ShopOnline.Application.System.Users;
 
 namespace ShopOnline.WebBackEnd
 {
