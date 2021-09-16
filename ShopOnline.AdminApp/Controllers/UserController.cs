@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using ShopOnline.ViewModel.Users.System;
+﻿using Microsoft.AspNetCore.Mvc;
+using ShopOnline.ViewModel.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,22 +7,21 @@ using System.Threading.Tasks;
 
 namespace ShopOnline.AdminApp.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class UserController : Controller
     {
-        public UserController()
-        {
-
-        }
-
-        [HttpGet]
-        public IActionResult Login()
+        public IActionResult Index()
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Login(LoginRequest rq) 
+        {
+            return View();
+        }
+
         [HttpPost]
-        public IActionResult Login(LoginRequest rq)
+        public IActionResult Register(LoginRequest rq)
         {
             return View();
         }

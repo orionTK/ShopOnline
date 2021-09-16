@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using ShopOnline.ViewModel.Users.System;
+using ShopOnline.ViewModel.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace ShopOnline.Application.Users.System
+namespace ShopOnline.Application.System.Users
 {
     public class UserService : IUserService
     {

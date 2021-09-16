@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using ShopOnline.ViewModel.Users.System;
+using ShopOnline.ViewModel.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;

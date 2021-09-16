@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ShopOnline.Application.Users.System;
-using ShopOnline.ViewModel.Users.System;
+using ShopOnline.Application.System.Users;
+using ShopOnline.ViewModel.System.Users;
+using ShopOnline.ViewModel.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace ShopOnline.WebBackEnd.Controllers
             var result = await _userService.Authencate(rq);
             if (string.IsNullOrEmpty(result))
                 return BadRequest("User or password is incorrect.");
-            return Ok(new { token = result });
+            return Ok(result);
         }
 
         [HttpPost("register")]
