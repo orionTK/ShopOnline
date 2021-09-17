@@ -29,11 +29,10 @@ namespace ShopOnline.AdminApp
         {
             services.AddHttpClient();
 
-            services.AddControllersWithViews(); 
-              //.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
+            services.AddControllersWithViews()
+              .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
             services.AddTransient<IUserApiClient, UserApiClient>();
-            services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
 
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -59,12 +58,14 @@ namespace ShopOnline.AdminApp
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
-           
+
+            app.UseAuthentication();
+
             app.UseRouting();
 
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
