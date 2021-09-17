@@ -1,8 +1,10 @@
-﻿using ShopOnline.ViewModel.System.Users;
+﻿using Newtonsoft.Json;
+using ShopOnline.ViewModel.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ShopOnline.AdminApp.Services
@@ -15,10 +17,15 @@ namespace ShopOnline.AdminApp.Services
         {
             _httpClientFactory = httpClientFactory;
         }
-        public Task<string> Authenticate(LoginRequest rq)
+        public async Task<string> Authenticate(LoginRequest rq)
         {
+            var json = JsonConvert.SerializeObject(rq);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
             var client = _httpClientFactory.CreateClient();
-            client.PostAsync
+            client.BaseAddress = new Uri("https://localhost:5001");
+            var reponse = await client.PostAsync("/api/users/authenticate", httpContent);
+            var token = await reponse.Content.ReadAsStringAsync();
+            return token;
         }
 
         public Task<bool> Register(RegisterRequest rq)

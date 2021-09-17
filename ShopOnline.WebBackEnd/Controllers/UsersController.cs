@@ -24,7 +24,7 @@ namespace ShopOnline.WebBackEnd.Controllers
 
         [HttpPost("authenticate")]
         [AllowAnonymous]
-        public async Task<IActionResult> Authenticate([FromForm] LoginRequest rq)
+        public async Task<IActionResult> Authenticate([FromBody] LoginRequest rq)
         {
             if (!ModelState.IsValid)
             {
@@ -38,7 +38,8 @@ namespace ShopOnline.WebBackEnd.Controllers
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromForm] RegisterRequest rq)
+        //FromBody => file json
+        public async Task<IActionResult> Register([FromBody] RegisterRequest rq)
         {
             string pattern = @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,20})$";
             Regex rgx = new Regex(pattern);

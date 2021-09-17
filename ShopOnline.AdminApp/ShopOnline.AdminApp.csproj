@@ -20,7 +20,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShopOnline.Application\ShopOnline.Application.csproj" />
+    <ProjectReference Include="..\ShopOnline.Data\ShopOnline.Data.csproj" />
+    <ProjectReference Include="..\ShopOnline.Utilies\ShopOnline.Utilies.csproj" />
     <ProjectReference Include="..\ShopOnline.ViewModel\ShopOnline.ViewModel.csproj" />
+    <ProjectReference Include="..\ShopOnline.WebBackEnd\ShopOnline.WebBackEnd.csproj" />
   </ItemGroup>
 
 </Project>

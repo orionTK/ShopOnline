@@ -70,7 +70,6 @@ namespace ShopOnline.WebBackEnd
 
 
 
-
             //add swagger
             services.AddSwaggerGen(c =>
             {

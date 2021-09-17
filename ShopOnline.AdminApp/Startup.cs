@@ -1,9 +1,13 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ShopOnline.AdminApp.Services;
+using ShopOnline.ViewModel.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +27,13 @@ namespace ShopOnline.AdminApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddHttpClient();
+
+            services.AddControllersWithViews(); 
               //.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
+            services.AddTransient<IUserApiClient, UserApiClient>();
+            services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
 
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -52,7 +60,7 @@ namespace ShopOnline.AdminApp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+           
             app.UseRouting();
 
             app.UseAuthorization();
