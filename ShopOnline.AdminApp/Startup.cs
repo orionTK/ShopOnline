@@ -30,6 +30,8 @@ namespace ShopOnline.AdminApp
         {
             services.AddHttpClient();
 
+            services.AddSession();
+
             services.AddControllersWithViews()
               .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
@@ -67,6 +69,8 @@ namespace ShopOnline.AdminApp
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
+            app.UseSession();
+
 
             app.UseAuthentication();
 

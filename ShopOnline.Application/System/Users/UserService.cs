@@ -10,6 +10,9 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
+using ShopOnline.ViewModel.Common;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShopOnline.Application.System.Users
 {
@@ -56,6 +59,37 @@ namespace ShopOnline.Application.System.Users
                 signingCredentials: creds);
 
             return  new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public async Task<PagedResult<UserViewModel>> GetUsersPaging(GetUserPagingRequest rq)
+        {
+            var query = _userManager.Users;
+            if (!string.IsNullOrEmpty(rq.keyword))
+            {
+                query = query.Where(x=>x.UserName.Contains(rq.keyword)
+                || x.PhoneNumber.Contains(rq.keyword));
+            }
+
+            int totalRow = query.Count();
+            var data = await query.Skip((rq.PageIndex - 1) * rq.PageSize)
+                .Take(rq.PageSize)
+                .Select(x => new UserViewModel()
+                {
+                    PhoneNumber = x.PhoneNumber,
+                    Email = x.Email,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Id = x.Id,
+                    UserName = x.UserName
+                   
+                }).ToListAsync();
+
+            var pagedResult = new PagedResult<UserViewModel>()
+            {
+                TotalRecord = totalRow,
+                Items = data
+            };
+            return pagedResult;
         }
 
         public async Task<bool> Register(RegisterRequest rq)

@@ -17,38 +17,36 @@ namespace ShopOnline.WebBackEnd.Controllers
     [Authorize]
     public class ProductImagesController : ControllerBase
     {
-        private readonly IPublicProductService _publicProductService;
-        private readonly IManagerProductService _managerProductService;
+        private readonly IProductService _productService;
 
-        public ProductImagesController(IPublicProductService publicProductService, IManagerProductService managerProductService)
+        public ProductImagesController(IProductService productService)
         {
-            _publicProductService = publicProductService;
-            _managerProductService = managerProductService;
+            _productService = productService;
         }
 
         [HttpGet("get-list-images/{productId}")]
         public async Task<IActionResult> GetListImages(int productId)
         {
-            var result = await _managerProductService.GetListImages(productId);
+            var result = await _productService.GetListImages(productId);
             return Ok(result);
         }
 
         [HttpPost("add-images/{productId}")]
         public async Task<IActionResult> AddImages(int productId, [FromForm] ProductImageCreateRequest request)
         {
-            var result = await _managerProductService.AddImages(productId, request);
+            var result = await _productService.AddImages(productId, request);
             if (result == 0)
             {
                 return BadRequest($"Don't find productId: {productId}");
             }
-            var pm = _managerProductService.GetImageById(result);
+            var pm = _productService.GetImageById(result);
             return CreatedAtAction(nameof(GetImageById), new { productId }, pm);
         }
 
         [HttpDelete("remove-images/{imageId}")]
         public async Task<IActionResult> RemoveImages(int imageId)
         {
-            var result = await _managerProductService.RemoveImages(imageId);
+            var result = await _productService.RemoveImages(imageId);
             if (result == 0)
             {
                 return BadRequest($"Don't find image with id : {imageId}");
@@ -59,7 +57,7 @@ namespace ShopOnline.WebBackEnd.Controllers
         [HttpPatch("update-images/{imageId}")]
         public async Task<IActionResult> UpdateImages(int imageId, [FromForm] ProductImageUpdateRequest request)
         {
-            var result = await _managerProductService.UpdateImages(imageId, request);
+            var result = await _productService.UpdateImages(imageId, request);
             if (result == 0)
             {
                 return BadRequest($"Don't find image with id : {imageId}");
@@ -70,7 +68,7 @@ namespace ShopOnline.WebBackEnd.Controllers
         [HttpGet("get-image-by-id/{imageId}")]
         public async Task<IActionResult> GetImageById([FromQuery] int imageId)
         {
-            var result = await _managerProductService.GetImageById(imageId);
+            var result = await _productService.GetImageById(imageId);
             if (result == null)
             {
                 return BadRequest($"Don't find image with id : {imageId}");

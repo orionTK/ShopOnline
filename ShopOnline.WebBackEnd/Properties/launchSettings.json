@@ -17,7 +17,7 @@
     },
     "ShopOnline.WebBackEnd": {
       "commandName": "Project",
-      "launchBrowser": false, //don't need show swagger
+      "launchBrowser": true, 
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:5001",
       "environmentVariables": {

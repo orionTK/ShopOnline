@@ -2,7 +2,7 @@
 using ShopOnline.ViewModel.Catalog.ProductImages;
 using ShopOnline.ViewModel.Catalog.Products;
 using ShopOnline.ViewModel.Catalogs.Products;
-using ShopOnline.ViewModel.DTO;
+using ShopOnline.ViewModel.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShopOnline.Application.Catalogs.Products
 {
-    public interface IManagerProductService
+    public interface IProductService
     {
         Task<int> Create(ProductCreateRequest rq);
         Task<bool> Update(ProductUpdateRequest rq);
@@ -25,6 +25,9 @@ namespace ShopOnline.Application.Catalogs.Products
         Task<int> UpdateImages(int imageId, ProductImageUpdateRequest request);
         Task<List<ProductImageViewModel>> GetListImages(int productId);
         Task<ProductImageViewModel> GetImageById(int imageId);
+        Task<PagedResult<ProductViewModel>> GetAllByCategoryId(string laguageId, GetPublicProductPagingRequest rq);
+        Task<PagedResult<ProductViewModel>> GetAll(string languageId);
+        Task<ProductViewModel> GetById(int productId, string languageId);
 
     }
 }
