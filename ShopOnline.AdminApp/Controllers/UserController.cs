@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using ShopOnline.AdminApp.Services;
+using ShopOnline.ViewModel.Common;
 using ShopOnline.ViewModel.System.Users;
 using System;
 using System.Collections.Generic;
@@ -28,9 +30,19 @@ namespace ShopOnline.AdminApp.Controllers
             _configuration = configuration;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
-            return View();
+            var session = HttpContext.Session.GetString("Token");
+            var rq = new GetUserPagingRequest()
+            {
+                BearerToken = session,
+                keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageIndex
+            };
+
+            var data = await _userApiClient.GetUsersPaging(rq);
+            return View(data);
         }
 
         [HttpGet]
@@ -65,6 +77,9 @@ namespace ShopOnline.AdminApp.Controllers
                 //luu 
                 IsPersistent = false
             };
+
+            HttpContext.Session.SetString("Token", token);
+
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 userPrincical,
@@ -77,6 +92,8 @@ namespace ShopOnline.AdminApp.Controllers
         {
             return View();
         }
+
+     
 
         private ClaimsPrincipal ValidationToken(string jwtToken)
         {
@@ -95,5 +112,7 @@ namespace ShopOnline.AdminApp.Controllers
 
             return principal;
         }
+
+       
     }
 }

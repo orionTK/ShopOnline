@@ -1,4 +1,5 @@
-﻿using ShopOnline.ViewModel.System.Users;
+﻿using ShopOnline.ViewModel.Common;
+using ShopOnline.ViewModel.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace ShopOnline.AdminApp.Services
        
         Task<string> Authenticate(LoginRequest rq);
         Task<bool> Register(RegisterRequest rq);
+        Task<PagedResult<UserViewModel>> GetUsersPaging(GetUserPagingRequest rq);
     }
 }

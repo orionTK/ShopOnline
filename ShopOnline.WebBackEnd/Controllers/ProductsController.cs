@@ -4,7 +4,6 @@ using ShopOnline.Application.Catalogs.Products;
 using ShopOnline.ViewModel.Catalog.ProductImages;
 using ShopOnline.ViewModel.Catalog.Products;
 using ShopOnline.ViewModel.Catalogs.Products;
-using ShopOnline.ViewModel.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,19 +15,17 @@ namespace ShopOnline.WebBackEnd.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IPublicProductService _publicProductService;
-        private readonly IManagerProductService _managerProductService;
+        private readonly IProductService _productService;
 
-        public ProductsController(IPublicProductService publicProductService, IManagerProductService managerProductService)
+        public ProductsController(IProductService productService)
         {
-            _publicProductService = publicProductService;
-            _managerProductService = managerProductService;
+            _productService = productService;
         }
 
         [HttpGet("get-all/{languageId}")]
         public async Task<IActionResult> GetAll(string languageId)
         {
-            var products = await _publicProductService.GetAll(languageId);
+            var products = await _productService.GetAll(languageId);
             return Ok(products);
 
         }
@@ -36,7 +33,7 @@ namespace ShopOnline.WebBackEnd.Controllers
         [HttpGet("get-by-id/{productId}/{languageId}")]
         public async Task<IActionResult> GetById([FromQuery] int productId, string languageId)
         {
-            var product =  _publicProductService.GetById(productId, languageId);
+            var product =  _productService.GetById(productId, languageId);
             if (product == null)
                 return BadRequest("Can't find product");
             return Ok(product.Result);
@@ -46,15 +43,15 @@ namespace ShopOnline.WebBackEnd.Controllers
         [HttpGet("get-all-by-category-id/{languageId}")]
         public async Task<IActionResult> GetAllByCategoryId([FromQuery] string languageId)
         {
-            var product = _publicProductService.GetAll( languageId);
+            var product = _productService.GetAll( languageId);
             return Ok(product.Result);
 
         }
 
         [HttpGet("get-all-category/{languageId}")]
-        public async Task<IActionResult> GetAllPaging([FromForm] GetPublicProductPagingRequest rq)
+        public async Task<IActionResult> GetAllPaging([FromQuery] GetPublicProductPagingRequest rq)
         {
-            var product = _publicProductService.GetAll(rq.languageId);
+            var product = _productService.GetAll(rq.languageId);
 
             //var products = _publicProductService.GetAllByCategoryId(languageId, rq);
             return Ok(product.Result);
@@ -70,12 +67,12 @@ namespace ShopOnline.WebBackEnd.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var productId = await _managerProductService.Create(request);
+            var productId = await _productService.Create(request);
             if (productId == 0)
             {
                 return BadRequest("Can't create a new product"); //400
             }
-            var product = await _publicProductService.GetById(productId, request.LanguageId);
+            var product = await _productService.GetById(productId, request.LanguageId);
             //return Ok(); //200
             return CreatedAtAction(nameof(GetById), new { ProdcutId = productId }, product);
 
@@ -88,7 +85,7 @@ namespace ShopOnline.WebBackEnd.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var status = await _managerProductService.Update(request);
+            var status = await _productService.Update(request);
             if (status == false)
             {
                 return BadRequest(); //400
@@ -99,7 +96,7 @@ namespace ShopOnline.WebBackEnd.Controllers
         [HttpPut("update-price/{productId}/{newPrice}")]
         public async Task<IActionResult> UpdatePrice([FromQuery] int productId, decimal newPrice)
         {
-            var status = await _managerProductService.UpdatePrice(productId, newPrice);
+            var status = await _productService.UpdatePrice(productId, newPrice);
             if (status == false)
             {
                 return BadRequest(); //400
@@ -111,7 +108,7 @@ namespace ShopOnline.WebBackEnd.Controllers
         [HttpDelete("delete-product/{productId}")]
         public async Task<IActionResult> Delete(int productId)
         {
-            var result = await _managerProductService.Delete(productId);
+            var result = await _productService.Delete(productId);
             if (result == 0)
             {
                 return BadRequest(); //400
@@ -120,10 +117,10 @@ namespace ShopOnline.WebBackEnd.Controllers
             return Ok();
         }
 
-        [HttpPost("add-viewcount/{productId}")]
+        [HttpPost("add-viewcount/{productId}")] 
         public async Task<IActionResult> AddViewCount(int productId)
         {
-            await _managerProductService.AddViewCount(productId);
+            await _productService.AddViewCount(productId);
             return Ok();
 
         }
@@ -132,7 +129,7 @@ namespace ShopOnline.WebBackEnd.Controllers
         [HttpPatch("update-stock/{id}/{productId}")]
         public async Task<IActionResult> UpdateStock(int productId, int addQuantity)
         {
-            var result = await _managerProductService.UpdateStock(productId, addQuantity);
+            var result = await _productService.UpdateStock(productId, addQuantity);
             if (result == false)
             {
                 return BadRequest();

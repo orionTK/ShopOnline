@@ -1,4 +1,4 @@
-﻿using ShopOnline.ViewModel.DTO;
+﻿using ShopOnline.ViewModel.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
