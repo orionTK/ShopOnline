@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopOnline.AdminApp.Services;
 using ShopOnline.ViewModel.System.Users;
 using System;
 using System.Collections.Generic;
@@ -9,15 +10,25 @@ namespace ShopOnline.AdminApp.Controllers
 {
     public class UserController : Controller
     {
+        private readonly IUserApiClient _userApiClient;
+        public UserController(IUserApiClient userApiClient)
+        {
+            _userApiClient = userApiClient;
+        }
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpGet]
-        public IActionResult Login(LoginRequest rq) 
+        public async Task<IActionResult> Login(LoginRequest rq) 
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return View(ModelState);
+            }
+            var token = _userApiClient.Authenticate(rq);
+            return View(token);
         }
 
         [HttpPost]
