@@ -44,11 +44,17 @@ namespace ShopOnline.AdminApp.Services
             return users;
         }
 
-        public Task<bool> Register(RegisterRequest rq)
+        public async Task<bool> RegisterUser(RegisterRequest rq)
         {
-            throw new NotImplementedException();
-        }
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
-        
+            var json = JsonConvert.SerializeObject(rq);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync($"/api/users", httpContent);
+            
+            return response.IsSuccessStatusCode;
+        }
     }
 }

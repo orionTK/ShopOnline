@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace ShopOnline.AdminApp.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUserApiClient _userApiClient;
         private readonly IConfiguration _configuration;
@@ -45,47 +45,18 @@ namespace ShopOnline.AdminApp.Controllers
             return View(data);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Login()
-        {
-
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme );
-            return View();
-        }
+        
 
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-
+            //logout
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Login", "User");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginRequest rq) 
-        {
-
-            if (!ModelState.IsValid)
-                return View(ModelState);
-
-            var token = await _userApiClient.Authenticate(rq);
-            var userPrincical = this.ValidationToken(token);
-            var authProperties = new AuthenticationProperties
-            {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                //luu 
-                IsPersistent = false
-            };
-
-            HttpContext.Session.SetString("Token", token);
-
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                userPrincical,
-                authProperties);
-            return RedirectToAction("Index", "Home");
-        }
+        
 
         [HttpPost]
         public IActionResult Register(LoginRequest rq)
@@ -93,26 +64,25 @@ namespace ShopOnline.AdminApp.Controllers
             return View();
         }
 
-     
 
-        private ClaimsPrincipal ValidationToken(string jwtToken)
+        [HttpGet]
+        public IActionResult Create()
         {
-            IdentityModelEventSource.ShowPII = true;
-
-            SecurityToken validatedToken;
-            TokenValidationParameters validationParameters = new TokenValidationParameters();
-
-            IdentityModelEventSource.ShowPII = true;
-
-            validationParameters.ValidAudience = _configuration["Tokens:Issuer"];
-            validationParameters.ValidIssuer = _configuration["Tokens:Issuer"];
-            validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
-
-            ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(jwtToken, validationParameters, out validatedToken);
-
-            return principal;
+            return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create(RegisterRequest rq)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var result = await _userApiClient.RegisterUser(rq);
+            if (result)
+                return RedirectToAction("Index");
+            return View(rq);
+        }
        
     }
 }
