@@ -31,7 +31,7 @@ namespace ShopOnline.AdminApp
             services.AddHttpClient();
 
             services.AddSession(options=> {
-                options.IdleTimeout = TimeSpan.FromMilliseconds(30);
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
 
             services.AddControllersWithViews()
