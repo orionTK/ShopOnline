@@ -30,7 +30,9 @@ namespace ShopOnline.AdminApp
         {
             services.AddHttpClient();
 
-            services.AddSession();
+            services.AddSession(options=> {
+                options.IdleTimeout = TimeSpan.FromMilliseconds(30);
+            });
 
             services.AddControllersWithViews()
               .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
@@ -48,7 +50,7 @@ namespace ShopOnline.AdminApp
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
-                options.LoginPath = "/User/Login/";
+                options.LoginPath = "/Login/Index/";
                 options.AccessDeniedPath = "/User/Forbidden";
             });
         }
@@ -67,6 +69,8 @@ namespace ShopOnline.AdminApp
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
+
 
             app.UseStaticFiles();
             app.UseSession();

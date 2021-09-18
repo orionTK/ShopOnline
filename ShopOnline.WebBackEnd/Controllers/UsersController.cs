@@ -27,6 +27,8 @@ namespace ShopOnline.WebBackEnd.Controllers
             _productService = productService;
         }
 
+       
+
         [HttpPost("authenticate")]
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody] LoginRequest rq)
