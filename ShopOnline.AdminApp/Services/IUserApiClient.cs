@@ -10,9 +10,15 @@ namespace ShopOnline.AdminApp.Services
 {
     public interface IUserApiClient
     {
-       
-        Task<string> Authenticate(LoginRequest rq);
-        Task<bool> RegisterUser(RegisterRequest rq);
-        Task<PagedResult<UserViewModel>> GetUsersPaging(GetUserPagingRequest rq);
+        Task<ApiResult<string>> Authenticate(LoginRequest rq);
+
+        Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest rq);
+
+        Task<ApiResult<bool>> RegisterUser(RegisterRequest rq);
+
+        Task<ApiResult<bool>> UpdateUser(Guid id, UserUpdateRequest request);
+        Task<ApiResult<UserViewModel>> GetById(Guid id);
+        Task<ApiResult<bool>> DeleteUser(Guid id);
+
     }
 }

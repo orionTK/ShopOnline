@@ -5,8 +5,9 @@ using System.Text;
 
 namespace ShopOnline.ViewModel.System.Users
 {
-    public class UserViewModel
+    public class UserUpdateRequest
     {
+        [Display(Name = "UserId")]
         public Guid Id { get; set; }
 
         [Display(Name = "Tên")]
@@ -15,19 +16,14 @@ namespace ShopOnline.ViewModel.System.Users
         [Display(Name = "Họ")]
         public string LastName { get; set; }
 
-        [Display(Name = "Số điện thoại")]
-        public string PhoneNumber { get; set; }
-
-        [Display(Name = "Tài khoản")]
-        public string UserName { get; set; }
+        [Display(Name = "Ngày sinh")]
+        [DataType(DataType.Date)]
+        public DateTime Dob { get; set; }
 
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Display(Name = "Ngày sinh")]
-        public DateTime Dob { get; set; }
-
-        public IList<string> Roles { get; set; }
-
+        [Display(Name = "Số điện thoại")]
+        public string PhoneNumber { get; set; }
     }
 }

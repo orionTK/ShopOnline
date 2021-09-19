@@ -173,7 +173,9 @@ namespace ShopOnline.Application.Catalogs.Products
 
             var pagedResult = new PagedResult<ProductViewModel>()
             {
-                TotalRecord = totalRow,
+                TotalRecords = totalRow,
+                PageIndex = rq.PageIndex,
+                PageSize = rq.PageSize,
                 Items = data
             };
             return pagedResult;
@@ -384,7 +386,7 @@ namespace ShopOnline.Application.Catalogs.Products
 
             var pagedResult = new PagedResult<ProductViewModel>()
             {
-                TotalRecord = totalRow,
+                TotalRecords = totalRow,
                 Items = data
             };
             return pagedResult;
@@ -426,7 +428,9 @@ namespace ShopOnline.Application.Catalogs.Products
 
             var pagedResult = new PagedResult<ProductViewModel>()
             {
-                TotalRecord = totalRow,
+                TotalRecords = totalRow,
+                PageIndex = rq.PageIndex,
+                PageSize = rq.PageSize,
                 Items = data
             };
             return pagedResult;
