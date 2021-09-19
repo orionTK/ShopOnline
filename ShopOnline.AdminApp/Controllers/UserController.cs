@@ -30,7 +30,7 @@ namespace ShopOnline.AdminApp.Controllers
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 2)
         {
             var session = HttpContext.Session.GetString("Token");
             var rq = new GetUserPagingRequest()
@@ -38,7 +38,7 @@ namespace ShopOnline.AdminApp.Controllers
                 BearerToken = session,
                 keyword = keyword,
                 PageIndex = pageIndex,
-                PageSize = pageIndex
+                PageSize = pageSize
             };
 
             var data = await _userApiClient.GetUsersPaging(rq);
