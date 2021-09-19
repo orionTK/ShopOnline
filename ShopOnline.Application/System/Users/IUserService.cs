@@ -11,8 +11,12 @@ namespace ShopOnline.Application.System.Users
 {
     public interface IUserService
     {
-        Task<string> Authencate(LoginRequest rq);
-        Task<bool> Register(RegisterRequest rq);
-        Task<PagedResult<UserViewModel>> GetUsersPaging(GetUserPagingRequest rq);
+        Task<ApiResult<string>> Authencate(LoginRequest rq);
+        Task<ApiResult<bool>> Register(RegisterRequest request);
+        Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest rq);
+        Task<ApiResult<bool>> Update(Guid id, UserUpdateRequest request);
+        Task<ApiResult<UserViewModel>> GetById(Guid id);
+        Task<ApiResult<bool>> Delete(Guid id);
+
     }
 }

@@ -44,8 +44,13 @@ namespace ShopOnline.AdminApp.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var token = await _userApiClient.Authenticate(rq);
-            var userPrincical = this.ValidationToken(token);
+            var result = await _userApiClient.Authenticate(rq);
+            if (result.ResultObj == null)
+            {
+                ModelState.AddModelError("", result.Message);
+                return View();
+            }
+            var userPrincical = this.ValidationToken(result.ResultObj);
             var authProperties = new AuthenticationProperties
             {
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
@@ -53,7 +58,7 @@ namespace ShopOnline.AdminApp.Controllers
                 IsPersistent = false
             };
 
-            HttpContext.Session.SetString("Token", token);
+            HttpContext.Session.SetString("Token", result.ResultObj);
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,

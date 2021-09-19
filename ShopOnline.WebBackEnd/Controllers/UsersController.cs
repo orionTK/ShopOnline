@@ -38,7 +38,7 @@ namespace ShopOnline.WebBackEnd.Controllers
                 return BadRequest(ModelState);
             }   
             var result = await _userService.Authencate(rq);
-            if (string.IsNullOrEmpty(result))
+            if (string.IsNullOrEmpty(result.ResultObj))
                 return BadRequest("User or password is incorrect.");
             //else
             //    HttpContext.Session.SetString("Token", result);
@@ -60,7 +60,7 @@ namespace ShopOnline.WebBackEnd.Controllers
                 return BadRequest(ModelState);
             }
             var result = await _userService.Register(rq);
-            if (!result)
+            if (!result.IsSuccessed)
                 return BadRequest("Register is unsuccessful.");
             return Ok(new { token = result });
         }
@@ -71,6 +71,34 @@ namespace ShopOnline.WebBackEnd.Controllers
             var products = await _userService.GetUsersPaging(rq);
             return Ok(products);
 
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UserUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.Update(id, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var user = await _userService.GetById(id);
+            return Ok(user);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var user = await _userService.Delete(id);
+            return Ok(user);
         }
     }
 }
