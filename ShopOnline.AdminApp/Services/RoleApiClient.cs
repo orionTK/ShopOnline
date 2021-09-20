@@ -27,7 +27,7 @@ namespace ShopOnline.AdminApp.Services
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
         }
-        public async Task<ApiResult<List<RoleModelView>>> GetAll()
+        public async Task<ApiResult<List<RoleViewlModel>>> GetAll()
         {
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
@@ -37,10 +37,10 @@ namespace ShopOnline.AdminApp.Services
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                List<RoleModelView> listRole = (List<RoleModelView>)JsonConvert.DeserializeObject(body, typeof(List<RoleModelView>));
-                return new ApiSuccessResult<List<RoleModelView>>(listRole);
+                List<RoleViewlModel> listRole = (List<RoleViewlModel>)JsonConvert.DeserializeObject(body, typeof(List<RoleViewlModel>));
+                return new ApiSuccessResult<List<RoleViewlModel>>(listRole);
             }
-            return JsonConvert.DeserializeObject<ApiErrorResult<List<RoleModelView>>>(body);
+            return JsonConvert.DeserializeObject<ApiErrorResult<List<RoleViewlModel>>>(body);
         }
     }
 }
