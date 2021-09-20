@@ -10,6 +10,6 @@ namespace ShopOnline.AdminApp.Services
 {
     public interface IRoleApiClient
     {
-        Task<ApiResult<List<RoleModelView>>> GetAll();
+        Task<ApiResult<List<RoleViewlModel>>> GetAll();
     }
 }
