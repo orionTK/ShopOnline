@@ -30,9 +30,11 @@ namespace ShopOnline.AdminApp.Services
         {
             var json = JsonConvert.SerializeObject(rq);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
             var response = await client.PostAsync("/api/users/authenticate", httpContent);
+            var x = JsonConvert.DeserializeObject<ApiSuccessResult<string>>(await response.Content.ReadAsStringAsync());
             if (response.IsSuccessStatusCode)
             {
                 return JsonConvert.DeserializeObject<ApiSuccessResult<string>>(await response.Content.ReadAsStringAsync());

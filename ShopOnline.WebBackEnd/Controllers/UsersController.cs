@@ -39,7 +39,7 @@ namespace ShopOnline.WebBackEnd.Controllers
             }   
             var result = await _userService.Authencate(rq);
             if (string.IsNullOrEmpty(result.ResultObj))
-                return BadRequest("User or password is incorrect.");
+                return BadRequest(result);
             //else
             //    HttpContext.Session.SetString("Token", result);
             return Ok(result);
@@ -56,13 +56,14 @@ namespace ShopOnline.WebBackEnd.Controllers
             if (rgx.IsMatch(passWord))
                 return BadRequest("Password is absurd");
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
+
             var result = await _userService.Register(rq);
             if (!result.IsSuccessed)
-                return BadRequest("Register is unsuccessful.");
-            return Ok(new { token = result });
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
 
         [HttpGet("paging")]

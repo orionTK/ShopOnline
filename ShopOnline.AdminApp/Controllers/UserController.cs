@@ -135,21 +135,7 @@ namespace ShopOnline.AdminApp.Controllers
         public async Task<IActionResult> Details(Guid id)
         {
             var result = await _userApiClient.GetById(id);
-            if (result.IsSuccessed)
-            {
-                var user = result.ResultObj;
-                var updateRequest = new UserUpdateRequest()
-                {
-                    Dob = user.Dob,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    PhoneNumber = user.PhoneNumber,
-                    Id = id
-                };
-                return View(updateRequest);
-            }
-            return RedirectToAction("Error", "Home");
+            return View(result.ResultObj);
         }
 
         [HttpGet]

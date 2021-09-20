@@ -37,7 +37,7 @@ namespace ShopOnline.Application.System.Users
             if (user == null) return new ApiErrorResult<string>("Tài khoản không tồn tại");            //throw new ShopOnlineExeptions($"Can't find username");
             var result = await _signInManager.PasswordSignInAsync(user, rq.Password, rq.RememberMe, true);
             if (!result.Succeeded)
-                return new ApiErrorResult<string>("Đăng nhập thất bại");
+                return new ApiErrorResult<string>("Mật khẩu sai");
 
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new[]
