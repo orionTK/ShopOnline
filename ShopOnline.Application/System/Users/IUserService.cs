@@ -17,6 +17,6 @@ namespace ShopOnline.Application.System.Users
         Task<ApiResult<bool>> Update(Guid id, UserUpdateRequest request);
         Task<ApiResult<UserViewModel>> GetById(Guid id);
         Task<ApiResult<bool>> Delete(Guid id);
-
+        Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest rq);
     }
 }

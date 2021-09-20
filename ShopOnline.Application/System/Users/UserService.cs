@@ -180,5 +180,27 @@ namespace ShopOnline.Application.System.Users
 
             return new ApiErrorResult<bool>("Xóa không thành công");
         }
+
+        public async Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest rq)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                return new ApiErrorResult<bool>("User không tồn tại");
+            }
+            var removedRoles = rq.Roles.Where(x=>x.Selected == false).Select(x=>x.Name).ToList();
+            await _userManager.RemoveFromRolesAsync(user, removedRoles);
+
+            var addRoles = rq.Roles.Where(x => x.Selected).Select(x => x.Name).ToList();
+            foreach(var roleName in addRoles)
+            {
+                if (await _userManager.IsInRoleAsync(user, roleName) == false)
+                {
+                    await _userManager.AddToRolesAsync(user, addRoles);
+
+                }
+            }
+            return new ApiSuccessResult<bool>();
+        }
     }
 }
