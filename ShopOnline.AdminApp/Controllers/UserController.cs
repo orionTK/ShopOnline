@@ -22,12 +22,13 @@ namespace ShopOnline.AdminApp.Controllers
     {
         private readonly IUserApiClient _userApiClient;
         private readonly IConfiguration _configuration;
-
+        private readonly IRoleApiClient _roleApiClient;
         public UserController(IUserApiClient userApiClient,
-            IConfiguration configuration)
+            IConfiguration configuration, IRoleApiClient roleApiClient)
         {
             _userApiClient = userApiClient;
             _configuration = configuration;
+            _roleApiClient = roleApiClient;
         }
 
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 1)
@@ -164,5 +165,48 @@ namespace ShopOnline.AdminApp.Controllers
             return View(request);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> RoleAssign(Guid id)
+        {
+
+            var roleRq = await GetRoleAssignRequest(id);
+            return View(roleRq);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RoleAssign(RoleAssignRequest rq)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _userApiClient.RoleAssign(rq.Id, rq);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Cập nhật quyền thành công";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", result.Message);
+            var roleRq = await GetRoleAssignRequest(rq.Id);
+            return View(roleRq);
+        }
+
+        private async Task<RoleAssignRequest> GetRoleAssignRequest(Guid id)
+        {
+            var result = await _userApiClient.GetById(id);
+            var resultRole = await _roleApiClient.GetAll();
+            var roleRq = new RoleAssignRequest();
+            foreach (var roleName in resultRole.ResultObj)
+            {
+                roleRq.Roles.Add(new SelectItem()
+                {
+                    Id = roleName.Id.ToString(),
+                    Name = roleName.Name,
+                    Selected = result.ResultObj.Roles.Contains(roleName.Name)
+                });
+            }
+            return roleRq;
+
+        }
     }
 }

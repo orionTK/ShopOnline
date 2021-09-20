@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ShopOnline.Application.System.Users;
+using ShopOnline.Application.System.Roles;
 
 namespace ShopOnline.WebBackEnd
 {
@@ -59,6 +60,7 @@ namespace ShopOnline.WebBackEnd
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
             services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
+            services.AddTransient<IRoleService, RoleService>();
 
 
             services.AddControllersWithViews();
