@@ -28,7 +28,7 @@ namespace ShopOnline.WebBackEnd.Controllers
             return Ok(roles);
         }
 
-        [HttpGet("{}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var roles = await _roleService.GetById(id);
@@ -43,15 +43,47 @@ namespace ShopOnline.WebBackEnd.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var productId = await _roleService.Create(rq);
-            if (productId == 0)
+            var result = await _roleService.Create(rq);
+            if (!result.IsSuccessed)
             {
                 return BadRequest("Can't create a new role"); //400
             }
-            var product = await _productService.GetById(productId, request.LanguageId);
-            //return Ok(); //200
-            return CreatedAtAction(nameof(GetById), new { ProdcutId = productId }, product);
+            //var product = await _productService.GetById(productId, request.LanguageId);
+            ////return Ok(); //200
+            //return CreatedAtAction(nameof(GetById), new { ProdcutId = productId }, product);
+            return Ok(result);
+        }
 
+        [HttpPost("update/{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] RoleUpdateModel rq)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _roleService.Update(id, rq);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _roleService.Delete(id);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
     }
 }

@@ -38,10 +38,10 @@ namespace ShopOnline.Application.System.Roles
             return new ApiErrorResult<bool>("Xóa không thành công");
         }
 
-        public async Task<List<RoleViewlModel>> GetAll()
+        public async Task<List<RoleViewModel>> GetAll()
         {
             var roles = await _roleManager.Roles
-                .Select(x => new RoleViewlModel()
+                .Select(x => new RoleViewModel()
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -51,22 +51,22 @@ namespace ShopOnline.Application.System.Roles
             return roles;
         }
 
-        public async Task<ApiResult<RoleViewlModel>> GetById(Guid id)
+        public async Task<ApiResult<RoleViewModel>> GetById(Guid id)
         {
             var role = await _roleManager.FindByIdAsync(id.ToString());
 
 
             if (role == null)
             {
-                return new ApiErrorResult<RoleViewlModel>("Role không tồn tại");
+                return new ApiErrorResult<RoleViewModel>("Role không tồn tại");
             }
-            var roleVM = new RoleViewlModel()
+            var roleVM = new RoleViewModel()
             {
                 Description = role.Description,
                 Name = role.Name,
                 Id = role.Id
             };
-            return new ApiSuccessResult<RoleViewlModel>(roleVM);
+            return new ApiSuccessResult<RoleViewModel>(roleVM);
         }
 
         public async Task<ApiResult<bool>> Create(RoleCreateModel request)
@@ -88,7 +88,7 @@ namespace ShopOnline.Application.System.Roles
                 return new ApiSuccessResult<bool>();
             }
 
-            return new ApiErrorResult<bool>("Đăng ký không thành công");
+            return new ApiErrorResult<bool>("Tạo role không thành công");
         }
 
         public async Task<ApiResult<bool>> Update(Guid id, RoleUpdateModel request)

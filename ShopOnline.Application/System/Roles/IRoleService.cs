@@ -9,11 +9,11 @@ namespace ShopOnline.Application.System.Roles
 {
     public interface IRoleService
     {
-        Task<List<RoleViewlModel>> GetAll();
+        Task<List<RoleViewModel>> GetAll();
         Task<ApiResult<bool>> Create(RoleCreateModel request);
         Task<ApiResult<bool>> Update(Guid id, RoleUpdateModel request);
         Task<ApiResult<bool>> Delete(Guid id);
-        Task<ApiResult<RoleViewlModel>> GetById(Guid id);
+        Task<ApiResult<RoleViewModel>> GetById(Guid id);
 
     }
 }

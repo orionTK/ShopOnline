@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ShopOnline.ViewModel.System.Roles
 {
-    public class RoleViewlModel
+    public class RoleViewModel
     {
         public Guid Id { get; set; }
         [Display(Name = "Tên")]
