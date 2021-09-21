@@ -50,11 +50,11 @@ namespace ShopOnline.WebBackEnd.Controllers
         //FromBody => file json
         public async Task<IActionResult> Register([FromBody] RegisterRequest rq)
         {
-            string pattern = @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,20})$";
-            Regex rgx = new Regex(pattern);
-            string passWord = rq.Password;
-            if (rgx.IsMatch(passWord))
-                return BadRequest("Password is absurd");
+            //string pattern = @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,20})$";
+            //Regex rgx = new Regex(pattern);
+            //string passWord = rq.Password;
+            //if (rgx.IsMatch(passWord))
+            //    return BadRequest("Password is absurd");
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
