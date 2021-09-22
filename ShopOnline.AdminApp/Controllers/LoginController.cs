@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using ShopOnline.AdminApp.Services;
+using ShopOnline.Utilies.Constants;
 using ShopOnline.ViewModel.System.Users;
 using System;
 using System.Collections.Generic;
@@ -57,8 +58,10 @@ namespace ShopOnline.AdminApp.Controllers
                 //luu 
                 IsPersistent = false
             };
-
-            HttpContext.Session.SetString("Token", result.ResultObj);
+            //set language
+            HttpContext.Session.SetString(SystemConstants.AppSettings.DefaultLanguageId, _configuration[SystemConstants.AppSettings.DefaultLanguageId]);
+            //set token
+            HttpContext.Session.SetString(SystemConstants.AppSettings.Token, result.ResultObj);
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,

@@ -31,7 +31,7 @@ namespace ShopOnline.AdminApp.Controllers
             _roleApiClient = roleApiClient;
         }
 
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 1)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 5)
         {
             var session = HttpContext.Session.GetString("Token");
             var rq = new GetUserPagingRequest()
@@ -59,7 +59,7 @@ namespace ShopOnline.AdminApp.Controllers
             //logout
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return RedirectToAction("Login", "User");
+            return RedirectToAction("Index", "Login");
         }
 
         
