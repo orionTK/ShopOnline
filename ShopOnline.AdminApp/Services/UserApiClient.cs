@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using ShopOnline.Utilies.Constants;
 using ShopOnline.ViewModel.Common;
 using ShopOnline.ViewModel.System.Users;
 using System;
@@ -45,7 +46,7 @@ namespace ShopOnline.AdminApp.Services
 
         public async Task<ApiResult<UserViewModel>> GetById(Guid id)
         {
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
@@ -88,7 +89,7 @@ namespace ShopOnline.AdminApp.Services
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
@@ -105,7 +106,7 @@ namespace ShopOnline.AdminApp.Services
 
         public async Task<ApiResult<bool>> DeleteUser(Guid id)
         {
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
             var client = _httpClientFactory.CreateClient();
 
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
@@ -120,7 +121,7 @@ namespace ShopOnline.AdminApp.Services
 
         public async Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest rq)
         {
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
             var client = _httpClientFactory.CreateClient();
 
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
