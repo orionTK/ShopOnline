@@ -7,3 +7,5 @@
 - microsoft.entityframeworkcore.tools
 
 #ORM
+#OTHER FRAMEWORK 
+- Ckeditor

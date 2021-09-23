@@ -7,7 +7,6 @@ using ShopOnline.Utilies.Constants;
 using ShopOnline.Utilies.Exceptions;
 using ShopOnline.ViewModel.Catalog.ProductImages;
 using ShopOnline.ViewModel.Catalog.Products;
-using ShopOnline.ViewModel.Catalogs.Products;
 using ShopOnline.ViewModel.Common;
 using System;
 using System.Collections.Generic;
@@ -138,18 +137,19 @@ namespace ShopOnline.Application.Catalogs.Products
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
-                        join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
-                        join c in _context.Categories on pic.CategoryId equals c.CategoryId
-                        select new { p, pt, pic };
+                        //join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
+                        //join c in _context.Categories on pic.CategoryId equals c.CategoryId
+                        where pt.LanguageId == rq.LanguageId
+                        select new { p, pt};
             if (!string.IsNullOrEmpty(rq.Keyword))
             {
                 query = query.Where(x => x.pt.ProductName.Contains(rq.Keyword));
             }
 
-            if (rq.CategoryId.Count > 0)
-            {
-                query = query.Where(p => rq.CategoryId.Contains(p.pic.CategoryId));
-            }
+            //if (rq.CategoryId.Count > 0)
+            //{
+            //    query = query.Where(p => rq.CategoryId.Contains(p.pic.CategoryId));
+            //}
 
             int totalRow = query.Count();
             var data = await query.Skip((rq.PageIndex - 1) * rq.PageSize)
@@ -391,6 +391,7 @@ namespace ShopOnline.Application.Catalogs.Products
             };
             return pagedResult;
         }
+
 
         public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(string languageId, GetPublicProductPagingRequest rq)
         {

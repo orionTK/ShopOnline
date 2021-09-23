@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace ShopOnline.ViewModel.Catalogs.Products 
+namespace ShopOnline.ViewModel.Catalog.Products 
 {
     //Data stranfer object
     public class ProductUpdateRequest
     {
         public int ProductId { get; set; }
+        [Required(ErrorMessage ="Bạn phải nhập tên sản phẩm")]
         public string ProductName { get; set; }
         public string Description { get; set; }
         public string Details { get; set; }

@@ -13,11 +13,11 @@ namespace ShopOnline.AdminApp.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class RolesController : BaseController
+    public class RoleController : Controller
     {
         private readonly IRoleApiClient _roleApiClient;
 
-        public RolesController(IRoleApiClient roleApiClient)
+        public RoleController(IRoleApiClient roleApiClient)
         {
             _roleApiClient = roleApiClient;
         }
