@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopOnline.Application.Catalogs.Products;
 using ShopOnline.Application.System.Users;
-using ShopOnline.ViewModel.Catalogs.Products;
-using ShopOnline.ViewModel.System.Users;
 using ShopOnline.ViewModel.System.Users;
 using System;
 using System.Collections.Generic;

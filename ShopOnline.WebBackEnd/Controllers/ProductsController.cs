@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using ShopOnline.Application.Catalogs.Products;
 using ShopOnline.ViewModel.Catalog.ProductImages;
 using ShopOnline.ViewModel.Catalog.Products;
-using ShopOnline.ViewModel.Catalogs.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +48,7 @@ namespace ShopOnline.WebBackEnd.Controllers
         }
 
         [HttpGet("get-all-category/{languageId}")]
-        public async Task<IActionResult> GetAllPaging([FromQuery] GetPublicProductPagingRequest rq)
+        public async Task<IActionResult> GetAll([FromQuery] GetPublicProductPagingRequest rq)
         {
             var product = _productService.GetAll(rq.languageId);
 
@@ -58,9 +57,11 @@ namespace ShopOnline.WebBackEnd.Controllers
 
         }
 
-
+        
 
         [HttpPost("create-product")]
+        [Consumes("multipart/form-data")]
+        //chap nhan doi tuong form
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
             if (!ModelState.IsValid)
@@ -70,7 +71,7 @@ namespace ShopOnline.WebBackEnd.Controllers
             var productId = await _productService.Create(request);
             if (productId == 0)
             {
-                return BadRequest("Can't create a new product"); //400
+                return BadRequest("Không tạo được sản phẩm"); //400
             }
             var product = await _productService.GetById(productId, request.LanguageId);
             //return Ok(); //200
@@ -135,6 +136,16 @@ namespace ShopOnline.WebBackEnd.Controllers
                 return BadRequest();
             }
             return Ok();
+        }
+
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetAllPaging([FromQuery] GetManageProductPagingRequest rq)
+        {
+            var product = await _productService.GetAllPaging(rq);
+
+            //var products = _publicProductService.GetAllByCategoryId(languageId, rq);
+            return Ok(product);
+
         }
     }
 }

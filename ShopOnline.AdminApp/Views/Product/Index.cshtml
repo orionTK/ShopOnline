@@ -1,0 +1,113 @@
+﻿@using ShopOnline.ViewModel.Common;
+@model PagedResult<ShopOnline.ViewModel.Catalog.Products.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Danh sách sản phẩm   ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+    <script>
+        setTimeout(function () {
+            $('#msgAlert').fadeOut('slow');
+        }, 2000);
+    </script>
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Danh sách sản phẩm</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Danh sách sản phản</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            @*<i class="fas fa-table me-1"></i>*@
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-success" asp-action="Create" asp-controller="Product">Tạo mới</a>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <input type="text" name="keyword" class="form-control" value="@ViewBag.Keyword" />
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary" type="submit">Tìm</button>
+                                <button class="btn btn-dark" type="button" onclick="window.location.href='/Product/Index'">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Mã sản phẩm
+                            </th>
+                            <th>
+                                Tên sản phẩm
+                            </th>
+                            <th>
+                                Giá nhập
+                            </th>
+                            <th>
+                                Giá bán
+                            </th>
+                            <th>
+                                Số lượng tồn kho
+                            </th>
+                        </tr>
+                    </thead>
+@if(Model.Items != null){
+                     @foreach (var item in Model.Items)
+                    {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OriginalPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Stock)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Sửa", "Edit", new { id = item.ProductId }) |
+                        @Html.ActionLink("Xem", "Details", new { id = item.ProductId }) |
+                        @Html.ActionLink("Xóa", "Delete", new { id = item.ProductId }) |
+
+                    </td>
+                </tr>
+                    }
+                    }
+                </tbody>
+                </table>
+            </div>
+            @await Component.InvokeAsync("Pager", Model)
+        </div>
+
+    </div>
+

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using ShopOnline.ViewModel.Catalog.ProductImages;
 using ShopOnline.ViewModel.Catalog.Products;
-using ShopOnline.ViewModel.Catalogs.Products;
 using ShopOnline.ViewModel.Common;
 using System;
 using System.Collections.Generic;
