@@ -26,6 +26,7 @@ namespace ShopOnline.Application.System.Languages
         }
         public async Task<List<LanguageViewModel>> GetAll()
         {
+
             var listLanguages = await _context.Languages.Select(
                 x => new LanguageViewModel() { 
                 LanguageId = x.LanguageId,

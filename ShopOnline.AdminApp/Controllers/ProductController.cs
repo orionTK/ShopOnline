@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using ShopOnline.AdminApp.Services;
 using ShopOnline.Utilies.Constants;
@@ -25,7 +26,7 @@ namespace ShopOnline.AdminApp.Controllers
             _productApiClient = productApiClient;
             _categoryApiClient = categoryApiClient;
         }
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 5)
+        public async Task<IActionResult> Index(string keyword, int? categoryId, int pageIndex = 1, int pageSize = 5)
         {
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
             //var session = HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
@@ -35,11 +36,20 @@ namespace ShopOnline.AdminApp.Controllers
                 Keyword = keyword,
                 PageIndex = pageIndex,
                 PageSize = pageSize,
-                LanguageId = languageId
+                LanguageId = languageId,
+                CategoryId = categoryId
             };
-            var categories = await _categoryApiClient.GetAll(languageId);
             var data = await _productApiClient.GetProductsPaging(rq);
             ViewBag.Keyword = keyword;
+            var categories = await _categoryApiClient.GetAll(languageId);
+            
+            ViewBag.Categories = categories.Select(x => new SelectListItem()
+            {
+                Text = x.CategoryName,
+                Value = x.Id.ToString(),
+                Selected = categoryId.HasValue && categoryId.Value == x.Id
+            });
+           
             if (TempData["result"] != null)
             {
                 ViewBag.SuccessMsg = TempData["result"];

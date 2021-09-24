@@ -17,9 +17,9 @@ namespace ShopOnline.AdminApp.Services
             : base(httpClientFactory, configuration, httpContextAccessor)
         {
         }
-        public async Task<ApiResult<List<CategoryViewModel>>> GetAll(string languageId)
+        public async Task<List<CategoryViewModel>> GetAll(string languageId)
         {
-            return await GetAsync<List<CategoryViewModel>>("/api/languages?languageId=" + $"{languageId}");
+            return await GetListAsync<CategoryViewModel>("/api/categories?languageId=" + $"{languageId}");
         }
     }
 }

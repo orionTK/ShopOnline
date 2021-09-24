@@ -10,6 +10,6 @@ namespace ShopOnline.AdminApp.Services
 {
     public interface ICategoryApiClient
     {
-        Task<ApiResult<List<CategoryViewModel>>> GetAll(string languageId);
+        Task<List<CategoryViewModel>> GetAll(string languageId);
     }
 }

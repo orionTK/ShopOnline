@@ -137,19 +137,19 @@ namespace ShopOnline.Application.Catalogs.Products
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
-                        //join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
-                        //join c in _context.Categories on pic.CategoryId equals c.CategoryId
+                        join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
+                        join c in _context.Categories on pic.CategoryId equals c.CategoryId
                         where pt.LanguageId == rq.LanguageId
-                        select new { p, pt};
+                        select new { p, pt, pic};
             if (!string.IsNullOrEmpty(rq.Keyword))
             {
                 query = query.Where(x => x.pt.ProductName.Contains(rq.Keyword));
             }
 
-            //if (rq.CategoryId.Count > 0)
-            //{
-            //    query = query.Where(p => rq.CategoryId.Contains(p.pic.CategoryId));
-            //}
+            if (rq.CategoryId != null && rq.CategoryId > 0)
+            {
+                query = query.Where(p => p.pic.CategoryId == rq.CategoryId);
+            }
 
             int totalRow = query.Count();
             var data = await query.Skip((rq.PageIndex - 1) * rq.PageSize)
@@ -361,7 +361,7 @@ namespace ShopOnline.Application.Catalogs.Products
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
                         join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
-                        //join c in _context.Categories on pic.CategoryId equals c.CategoryId
+                        //join c in _context.Categories on pic.CategoryIds equals c.CategoryIds
                         where pt.LanguageId == languageId
                         select new { p, pt };
 

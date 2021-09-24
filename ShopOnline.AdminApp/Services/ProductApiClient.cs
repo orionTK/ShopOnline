@@ -31,7 +31,7 @@ namespace ShopOnline.AdminApp.Services
         }
         public async Task<ApiResult<PagedResult<ProductViewModel>>> GetProductsPaging(GetManageProductPagingRequest rq)
         {
-            var data = await base.GetAsync<PagedResult<ProductViewModel>>($"/api/products/paging?Keyword={rq.Keyword}" + $"&languageId={rq.LanguageId}" + "&pageIndex=" + $"{rq.PageIndex}&pageSize={rq.PageSize}");
+            var data = await base.GetAsync<PagedResult<ProductViewModel>>($"/api/products/paging?Keyword={rq.Keyword}" + $"&languageId={rq.LanguageId}" + "&pageIndex=" + $"{rq.PageIndex}&pageSize={rq.PageSize}&categoryId={rq.CategoryId}");
             return data;
         }
 
