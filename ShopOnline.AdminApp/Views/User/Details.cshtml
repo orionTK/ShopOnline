@@ -59,6 +59,10 @@
                     </dd>
                 </dl>
             </div>
+            <div>
+                @Html.ActionLink("Sửa", "Edit", new { id = Model.Id }) |
+                <a asp-action="Index">Quay về danh sách</a>
+            </div>
         </div>
     </div>
 </div>

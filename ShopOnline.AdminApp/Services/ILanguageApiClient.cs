@@ -9,6 +9,7 @@ namespace ShopOnline.AdminApp.Services
 {
     public interface ILanguageApiClient
     {
+
         Task<ApiResult<List<LanguageViewModel>>> GetAll();
     }
 }

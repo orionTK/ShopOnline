@@ -51,6 +51,24 @@ namespace ShopOnline.Application.System.Roles
             return roles;
         }
 
+        public async Task<List<RoleViewModel>> GetAllKeword(string keyword)
+        {
+            var query = _roleManager.Roles;
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                query = query.Where(x => x.Name.Contains(keyword));
+            }
+            var roles = await query
+            .Select(x => new RoleViewModel()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description
+            }).ToListAsync();
+
+            return roles;
+        }
+
         public async Task<ApiResult<RoleViewModel>> GetById(Guid id)
         {
             var role = await _roleManager.FindByIdAsync(id.ToString());
@@ -96,7 +114,7 @@ namespace ShopOnline.Application.System.Roles
             var role = await _roleManager.FindByIdAsync(id.ToString());
             if (role == null)
             {
-                return new ApiErrorResult<bool>("Role không tồn tại");
+                return new ApiErrorResult<bool>("Quyền không tồn tại");
             }
             role.Name = request.Name;
             role.Description = request.Description;

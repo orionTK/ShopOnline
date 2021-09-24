@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using ShopOnline.Application.System.Users;
 using ShopOnline.Application.System.Roles;
 using ShopOnline.Application.System.Languages;
+using ShopOnline.Application.Catalogs.Categories;
 
 namespace ShopOnline.WebBackEnd
 {
@@ -63,6 +64,7 @@ namespace ShopOnline.WebBackEnd
             services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<ILanguageService, LanguageService>();
+            services.AddTransient<ICategoryService, CategoryService>();
 
 
             services.AddControllersWithViews();

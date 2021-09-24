@@ -28,6 +28,14 @@ namespace ShopOnline.WebBackEnd.Controllers
             return Ok(roles);
         }
 
+        [HttpGet("get-all-keyword")]
+        public async Task<IActionResult> GetAllKeyword(string keyword)
+        {
+            var roles = await _roleService.GetAllKeword(keyword);
+            return Ok(roles);
+        }
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -54,7 +62,7 @@ namespace ShopOnline.WebBackEnd.Controllers
             return Ok(result);
         }
 
-        [HttpPost("update/{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] RoleUpdateModel rq)
         {
 

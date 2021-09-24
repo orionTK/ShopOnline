@@ -1,0 +1,50 @@
+﻿@model ShopOnline.ViewModel.System.Roles.RoleViewModel
+
+@{
+    ViewData["Title"] = "Chi tiết";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid">
+    <h1 class="mt-4">Thông tin quyền</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/role/index">Danh sách quyền</a></li>
+        <li class="breadcrumb-item active">Thông tin quyền</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            @*<i class="fas fa-table me-1"></i>*@
+            <a class="btn btn-success" asp-action="Index" asp-controller="User">Về danh sách quyền</a>
+        </div>
+        <div class="card-body">
+            <div class="col-md-8">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Id)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Id)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                </dl>
+            </div>
+            <div>
+                @Html.ActionLink("Sửa", "Edit", new { id = Model.Id }) |
+                <a asp-action="Index">Quay về danh sách</a>
+            </div>
+        </div>
+    </div>
+</div>

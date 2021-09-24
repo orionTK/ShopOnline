@@ -326,7 +326,7 @@ namespace ShopOnline.Application.Catalogs.Products
             var productTranslation = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == productId && x.LanguageId == languageId);
 
             var categories = await (from c in _context.Categories
-                                    join ct in _context.CatogoryTranslations on c.CategoryId equals ct.CategoryId
+                                    join ct in _context.CategoryTranslations on c.CategoryId equals ct.CategoryId
                                     join pic in _context.ProductInCategories on c.CategoryId equals pic.CategoryId
                                     where pic.ProductId == productId && ct.LanguageId == languageId
                                     select ct.CategoryName).ToListAsync();
