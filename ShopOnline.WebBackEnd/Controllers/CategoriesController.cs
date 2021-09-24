@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopOnline.Application.Catalogs.Categories;
+using ShopOnline.ViewModel.Catalog.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +24,20 @@ namespace ShopOnline.Application.Controllers
             var categories = await _categoryService.GetAll(languageId);
             return Ok(categories);
         }
+
+        [HttpPut("{id}/categories")]
+        public async Task<IActionResult> CategoryAssign(Guid id, [FromBody] CategoryAssignRequest rq)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _categoryService.CategoryAssign(id, rq);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
     }
 }

@@ -135,10 +135,14 @@ namespace ShopOnline.Application.Catalogs.Products
 
         public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest rq)
         {
+            //user left join
             var query = from p in _context.Products
-                        join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
-                        join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
-                        join c in _context.Categories on pic.CategoryId equals c.CategoryId
+                        join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId into ppt
+                        from pt in ppt.DefaultIfEmpty()
+                        join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId into ppic
+                        from pic in ppic.DefaultIfEmpty()
+                        join c in _context.Categories on pic.CategoryId equals c.CategoryId into cc
+                        from c in cc.DefaultIfEmpty()
                         where pt.LanguageId == rq.LanguageId
                         select new { p, pt, pic};
             if (!string.IsNullOrEmpty(rq.Keyword))
@@ -437,7 +441,27 @@ namespace ShopOnline.Application.Catalogs.Products
             return pagedResult;
         }
 
+        public async Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest rq)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (user == null)
+            {
+                return new ApiErrorResult<bool>("Sản phẩm không tồn tại");
+            }
+            var removedRoles = rq.Categories.Where(x => x.Selected == false).Select(x => x.Name).ToList();
+            await _userManager.RemoveFromRolesAsync(user, removedRoles);
 
+            var addRoles = rq.Roles.Where(x => x.Selected).Select(x => x.Name).ToList();
+            foreach (var roleName in addRoles)
+            {
+                if (await _userManager.IsInRoleAsync(user, roleName) == false)
+                {
+                    await _userManager.AddToRolesAsync(user, addRoles);
+
+                }
+            }
+            return new ApiSuccessResult<bool>();
+        }
     }
 }
 
