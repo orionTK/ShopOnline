@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<ShopOnline.ViewModel.System.Roles.RoleViewModel>
+@*@using ShopOnline.ViewModel.Common;
+@model PagedResult<ShopOnline.ViewModel.System.Roles.RoleViewModel>*@
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Danh sách quyền";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 @section Scripts{
@@ -13,10 +17,10 @@
 }
 
 <div class="container-fluid">
-    <h1 class="mt-4">Danh sách role</h1>
+    <h1 class="mt-4">Danh sách quyền</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Danh sách role</li>
+        <li class="breadcrumb-item active">Danh sách quyền</li>
     </ol>
     <div class="card mb-4">
         <div class="card-header">
@@ -52,39 +56,51 @@
                 }
             </div>
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Id)
+                                RoleId
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Name)
+                                Tên quyền
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Description)
+                                Mô tả
                             </th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        @if (Model != null)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Id)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Description)
-                                </td>
-                                <td>
-                                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                                </td>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
+                                        @Html.ActionLink("Xem", "Details", new { id = item.Id }) |
+                                        @Html.ActionLink("Xóa", "Delete", new { id = item.Id })
+                                    </td>
+                                </tr>
+                            }
+
+
+
+                        }
+                        else
+                        {
+                            <tr style="text-align:center" >
+                                <td colspan="4">Danh sách rỗng</td>
                             </tr>
                         }
                     </tbody>

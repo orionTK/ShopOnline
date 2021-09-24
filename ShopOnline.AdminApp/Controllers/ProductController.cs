@@ -18,11 +18,12 @@ namespace ShopOnline.AdminApp.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IProductApiClient _productApiClient;
-        public ProductController(
-            IConfiguration configuration, IProductApiClient productApiClient)
+        private readonly ICategoryApiClient _categoryApiClient;
+        public ProductController(IConfiguration configuration, IProductApiClient productApiClient, ICategoryApiClient categoryApiClient)
         {
             _configuration = configuration;
             _productApiClient = productApiClient;
+            _categoryApiClient = categoryApiClient;
         }
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 5)
         {
@@ -36,7 +37,7 @@ namespace ShopOnline.AdminApp.Controllers
                 PageSize = pageSize,
                 LanguageId = languageId
             };
-
+            var categories = await _categoryApiClient.GetAll(languageId);
             var data = await _productApiClient.GetProductsPaging(rq);
             ViewBag.Keyword = keyword;
             if (TempData["result"] != null)

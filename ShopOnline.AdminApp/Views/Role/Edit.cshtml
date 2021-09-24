@@ -1,0 +1,42 @@
+﻿@model ShopOnline.ViewModel.System.Roles.RoleUpdateModel
+
+@{
+    ViewData["Title"] = "Sửa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Đổi thông tin quyền</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/role/index">Danh sách quyền</a></li>
+        <li class="breadcrumb-item active">Đổi thông tin quyền</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            @*<i class="fas fa-table me-1"></i>*@
+            <a class="btn btn-success" asp-action="Index" asp-controller="Role">Về danh sách quyền</a>
+        </div>
+        <div class="card-body">
+            <div class="col-md-8">
+                <form asp-action="Edit" asp-controller="Role">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Lưu lại" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -14,6 +14,6 @@ namespace ShopOnline.Application.System.Roles
         Task<ApiResult<bool>> Update(Guid id, RoleUpdateModel request);
         Task<ApiResult<bool>> Delete(Guid id);
         Task<ApiResult<RoleViewModel>> GetById(Guid id);
-
+        Task<List<RoleViewModel>> GetAllKeword(string keyword);
     }
 }

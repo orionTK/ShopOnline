@@ -36,7 +36,7 @@ namespace ShopOnline.AdminApp.Services
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
-            var response = await client.GetAsync($"/api/roles");
+            var response = await client.GetAsync($"/api/roles/get-all");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
@@ -48,8 +48,11 @@ namespace ShopOnline.AdminApp.Services
 
         public async Task<ApiResult<bool>> CreateRole(RoleCreateModel rq)
         {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
+
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var json = JsonConvert.SerializeObject(rq);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -69,7 +72,7 @@ namespace ShopOnline.AdminApp.Services
 
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
-            var response = await client.DeleteAsync($"/api/role/delete/{id}");
+            var response = await client.DeleteAsync($"/api/roles/delete/{id}");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
@@ -108,6 +111,22 @@ namespace ShopOnline.AdminApp.Services
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
 
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
+
+        public async Task<ApiResult<List<RoleViewModel>>> GetAllKeyword(string keyword)
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            var response = await client.GetAsync($"/api/roles/get-all-keyword?keyword={keyword}");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                List<RoleViewModel> listRole = (List<RoleViewModel>)JsonConvert.DeserializeObject(body, typeof(List<RoleViewModel>));
+                return new ApiSuccessResult<List<RoleViewModel>>(listRole);
+            }
+            return JsonConvert.DeserializeObject<ApiErrorResult<List<RoleViewModel>>>(body);
         }
     }
 }

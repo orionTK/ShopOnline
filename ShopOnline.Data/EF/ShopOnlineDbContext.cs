@@ -57,7 +57,7 @@ namespace ShopOnline.Data.EF
 
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<CategoryTranslation> CatogoryTranslations { get; set; }
+        public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -70,7 +70,6 @@ namespace ShopOnline.Data.EF
         public DbSet<Slide> Slides { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<ProductInCategory> ProductInCategories { get; set; }
-
 
 
     }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ShopOnline.ViewModel.System.Roles
 {
-    class RoleDeleteModel
+    public class RoleDeleteModel
     {
         public Guid Id { get; set; }
     }
