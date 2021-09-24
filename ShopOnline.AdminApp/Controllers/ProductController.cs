@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using ShopOnline.AdminApp.Services;
 using ShopOnline.Utilies.Constants;
 using ShopOnline.ViewModel.Catalog.Products;
+using ShopOnline.ViewModel.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +65,7 @@ namespace ShopOnline.AdminApp.Controllers
         }
 
         [HttpPost]
+        [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
 
@@ -79,6 +81,53 @@ namespace ShopOnline.AdminApp.Controllers
 
             ModelState.AddModelError("", "Thêm sản phẩm thất bại");
             return View(request);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> CategoryAssign(int id)
+        {
+            var categoriesRq = await GetCategoryAssignRequest(id);
+            return View(categoriesRq);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CategoryAssign([FromForm] CategoryAssignRequest request)
+        {
+
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _productApiClient.CategoryAssign(request.Id, request);
+
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Cập nhật danh mục thành công";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", result.Message);
+            var roleAssignRequest = await GetCategoryAssignRequest(request.Id);
+            return View(roleAssignRequest);
+        }
+
+
+        private async Task<CategoryAssignRequest> GetCategoryAssignRequest(int id)
+        {
+            var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+            var product = await _productApiClient.GetByIdProduct(id);
+            var categories = await _categoryApiClient.GetAll(languageId);
+            var categoryRq = new CategoryAssignRequest();
+            foreach (var categoryName in categories)
+            {
+                categoryRq.Categories.Add(new SelectItem()
+                {
+                    Id = categoryName.Id.ToString(),
+                    Name = categoryName.CategoryName,
+                    Selected = product.ResultObj.Categories.Contains(categoryName.CategoryName)
+                });
+            }
+            return categoryRq;
+
         }
     }
 }

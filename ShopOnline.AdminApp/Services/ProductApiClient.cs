@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ShopOnline.AdminApp.Services
@@ -79,20 +80,39 @@ namespace ShopOnline.AdminApp.Services
             return response.IsSuccessStatusCode;
         }
 
-        public Task<ApiResult<bool>> UpdateProduct(Guid id, ProductUpdateRequest rq)
+        public Task<ApiResult<bool>> UpdateProduct(int id, ProductUpdateRequest rq)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ApiResult<bool>> DeleteProduct(Guid id)
+        public Task<ApiResult<bool>> DeleteProduct(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ApiResult<ProductViewModel>> GetByIdProduct(Guid id)
+        public async Task<ApiResult<ProductViewModel>> GetByIdProduct(int id)
         {
-            throw new NotImplementedException();
+            var data = await base.GetAsync<PagedResult<ProductViewModel>>($"/api/products/paging?Keyword={rq.Keyword}" + $"&languageId={rq.LanguageId}" + "&pageIndex=" + $"{rq.PageIndex}&pageSize={rq.PageSize}&categoryId={rq.CategoryId}");
+            return data;
         }
 
+        public async Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest rq)
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
+            var client = _httpClientFactory.CreateClient();
+
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var json = JsonConvert.SerializeObject(rq);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync($"/api/products/{id}/categories", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
     }
 }

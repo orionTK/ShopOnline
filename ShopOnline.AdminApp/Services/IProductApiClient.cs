@@ -12,8 +12,10 @@ namespace ShopOnline.AdminApp.Services
     {
         Task<ApiResult<PagedResult<ProductViewModel>>> GetProductsPaging(GetManageProductPagingRequest rq);
         Task<bool> CreateProduct(ProductCreateRequest rq);
-        Task<ApiResult<bool>> UpdateProduct(Guid id, ProductUpdateRequest rq);
-        Task<ApiResult<bool>> DeleteProduct(Guid id);
-        Task<ApiResult<ProductViewModel>> GetByIdProduct(Guid id);
+        Task<ApiResult<bool>> UpdateProduct(int id, ProductUpdateRequest rq);
+        Task<ApiResult<bool>> DeleteProduct(int id);
+        Task<ApiResult<ProductViewModel>> GetByIdProduct(int id);
+        Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest rq);
+
     }
 }

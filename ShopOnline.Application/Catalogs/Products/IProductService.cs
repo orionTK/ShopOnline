@@ -27,6 +27,8 @@ namespace ShopOnline.Application.Catalogs.Products
         Task<PagedResult<ProductViewModel>> GetAllByCategoryId(string laguageId, GetPublicProductPagingRequest rq);
         Task<PagedResult<ProductViewModel>> GetAll(string languageId);
         Task<ProductViewModel> GetById(int productId, string languageId);
+        Task<ApiResult<bool>> RoleAssign(int id, CategoryAssignRequest rq);
+
 
     }
 }
