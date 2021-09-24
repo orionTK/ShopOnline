@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace ShopOnline.Application.Controllers
 {
-    public class CategoriesController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
 

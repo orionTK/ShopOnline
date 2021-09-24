@@ -33,6 +33,8 @@ namespace ShopOnline.Application.Catalogs.Categories
                 CategoryName = x.ct.CategoryName,
                 //ParentId = x.c.ParentId
             }).ToListAsync();
+
+
         }
     }
 }
