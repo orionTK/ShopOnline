@@ -143,6 +143,8 @@ namespace ShopOnline.Application.Catalogs.Products
                         from pic in ppic.DefaultIfEmpty()
                         join c in _context.Categories on pic.CategoryId equals c.CategoryId into cc
                         from c in cc.DefaultIfEmpty()
+                        //join ct in _context.CategoryTranslations on c.CategoryId equals ct.CategoryId into ctt
+                        //from ct in ctt.DefaultIfEmpty()
                         where pt.LanguageId == rq.LanguageId
                         select new { p, pt, pic};
             if (!string.IsNullOrEmpty(rq.Keyword))
@@ -172,7 +174,8 @@ namespace ShopOnline.Application.Catalogs.Products
                     SeoDescription = x.pt.SeoDescription,
                     SeoTitle = x.pt.SeoTitle,
                     Stock = x.p.Stock,
-                    ViewCount = x.p.ViewCount
+                    ViewCount = x.p.ViewCount,
+                    //Categories = x.
                 }).ToListAsync();
 
             var pagedResult = new PagedResult<ProductViewModel>()
@@ -324,19 +327,20 @@ namespace ShopOnline.Application.Catalogs.Products
             };
         }
 
-        public async Task<ProductViewModel> GetById(int productId, string languageId)
+        public async Task<ProductViewModel> GetById(int id, string languageId)
         {
-            var product = await _context.Products.FindAsync(productId);
-            var productTranslation = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == productId && x.LanguageId == languageId);
+            var product = await _context.Products.FindAsync(id);
+            if (product == null) throw new ShopOnlineExeptions($"Don't find product with image id: {id}");
+
+            var productTranslation = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == id && x.LanguageId == languageId);
 
             var categories = await (from c in _context.Categories
                                     join ct in _context.CategoryTranslations on c.CategoryId equals ct.CategoryId
                                     join pic in _context.ProductInCategories on c.CategoryId equals pic.CategoryId
-                                    where pic.ProductId == productId && ct.LanguageId == languageId
+                                    where pic.ProductId == id && ct.LanguageId == languageId
                                     select ct.CategoryName).ToListAsync();
 
-            var image = await _context.ProductImages.Where(x => x.ProductId == productId && x.IsDefault == true).FirstOrDefaultAsync();
-
+            var image = await _context.ProductImages.Where(x => x.ProductId == id && x.IsDefault == true).FirstOrDefaultAsync();
 
             var pv = new ProductViewModel()
             {
@@ -444,24 +448,33 @@ namespace ShopOnline.Application.Catalogs.Products
         public async Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest rq)
         {
             var product = await _context.Products.FindAsync(id);
-            if (user == null)
+            if (product == null)
             {
-                return new ApiErrorResult<bool>("Sản phẩm không tồn tại");
+                return new ApiErrorResult<bool>($"Sản phẩm với id {id} không tồn tại");
             }
-            var removedRoles = rq.Categories.Where(x => x.Selected == false).Select(x => x.Name).ToList();
-            await _userManager.RemoveFromRolesAsync(user, removedRoles);
-
-            var addRoles = rq.Roles.Where(x => x.Selected).Select(x => x.Name).ToList();
-            foreach (var roleName in addRoles)
+            foreach (var category in rq.Categories)
             {
-                if (await _userManager.IsInRoleAsync(user, roleName) == false)
+                var productInCategory = await _context.ProductInCategories
+                    .FirstOrDefaultAsync(x => x.CategoryId == int.Parse(category.Id)
+                    && x.ProductId == id);
+                if (productInCategory != null && category.Selected == false)
                 {
-                    await _userManager.AddToRolesAsync(user, addRoles);
-
+                    _context.ProductInCategories.Remove(productInCategory);
+                }
+                else if (productInCategory == null && category.Selected)
+                {
+                    await _context.ProductInCategories.AddAsync(new ProductInCategory()
+                    {
+                        CategoryId = int.Parse(category.Id),
+                        ProductId = id
+                    });
                 }
             }
+            await _context.SaveChangesAsync();
             return new ApiSuccessResult<bool>();
+
         }
+
     }
 }
 

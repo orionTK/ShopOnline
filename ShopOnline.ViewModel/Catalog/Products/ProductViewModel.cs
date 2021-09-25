@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using ShopOnline.ViewModel.Catalog.Categories;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,5 +24,6 @@ namespace ShopOnline.ViewModel.Catalog.Products
         public int Stock { get; set; }
         public IFormFile ThumbnailImage { get; set; }
         public List<string> Categories { get; set; } = new List<string>();
+        //public List<CategoryViewModel> Categories { get; set; }
     }
 }

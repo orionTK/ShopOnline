@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopOnline.Application.Catalogs.Products;
 using ShopOnline.ViewModel.Catalog.ProductImages;
@@ -29,10 +30,10 @@ namespace ShopOnline.WebBackEnd.Controllers
 
         }
 
-        [HttpGet("get-by-id/{productId}/{languageId}")]
-        public async Task<IActionResult> GetById([FromQuery] int productId, string languageId)
+        [HttpGet("get-by-id/{id}/{languageId}")]
+        public async Task<IActionResult> GetById(int id, string languageId)
         {
-            var product =  _productService.GetById(productId, languageId);
+            var product =  _productService.GetById(id, languageId);
             if (product == null)
                 return BadRequest("Can't find product");
             return Ok(product.Result);
@@ -146,6 +147,21 @@ namespace ShopOnline.WebBackEnd.Controllers
             //var products = _publicProductService.GetAllByCategoryId(languageId, rq);
             return Ok(product);
 
+        }
+
+        [HttpPut("{id}/categories")]
+        [Authorize]
+        public async Task<IActionResult> CategoryAssign(int id, [FromBody] CategoryAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _productService.CategoryAssign(id, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
     }
 }

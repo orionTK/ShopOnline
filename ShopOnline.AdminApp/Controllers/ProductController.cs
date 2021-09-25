@@ -114,7 +114,7 @@ namespace ShopOnline.AdminApp.Controllers
         private async Task<CategoryAssignRequest> GetCategoryAssignRequest(int id)
         {
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
-            var product = await _productApiClient.GetByIdProduct(id);
+            var product = await _productApiClient.GetById(id, languageId);
             var categories = await _categoryApiClient.GetAll(languageId);
             var categoryRq = new CategoryAssignRequest();
             foreach (var categoryName in categories)
