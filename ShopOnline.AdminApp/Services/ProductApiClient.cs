@@ -90,9 +90,15 @@ namespace ShopOnline.AdminApp.Services
             throw new NotImplementedException();
         }
 
-        public async Task<ApiResult<ProductViewModel>> GetByIdProduct(int id)
+        //public async Task<ApiResult<ProductViewModel>> GetByIdProduct(int id)
+        //{
+        //    var data = await base.GetAsync<PagedResult<ProductViewModel>>($"/api/products/paging?Keyword={rq.Keyword}" + $"&languageId={rq.LanguageId}" + "&pageIndex=" + $"{rq.PageIndex}&pageSize={rq.PageSize}&categoryId={rq.CategoryId}");
+        //    return data;
+        //}
+
+        public async Task<ApiResult<ProductViewModel>> GetById(int id, string languageId)
         {
-            var data = await base.GetAsync<PagedResult<ProductViewModel>>($"/api/products/paging?Keyword={rq.Keyword}" + $"&languageId={rq.LanguageId}" + "&pageIndex=" + $"{rq.PageIndex}&pageSize={rq.PageSize}&categoryId={rq.CategoryId}");
+            var data = await base.GetAsync<ProductViewModel>($"/api/products/get-by-id/{id}/{languageId}");
             return data;
         }
 

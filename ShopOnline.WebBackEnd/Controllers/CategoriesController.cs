@@ -25,19 +25,19 @@ namespace ShopOnline.Application.Controllers
             return Ok(categories);
         }
 
-        [HttpPut("{id}/categories")]
-        public async Task<IActionResult> CategoryAssign(Guid id, [FromBody] CategoryAssignRequest rq)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        //[HttpPut("{id}/categories")]
+        //public async Task<IActionResult> CategoryAssign(Guid id, [FromBody] CategoryAssignRequest rq)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
 
-            var result = await _categoryService.CategoryAssign(id, rq);
-            if (!result.IsSuccessed)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
+        //    var result = await _categoryService.CategoryAssign(id, rq);
+        //    if (!result.IsSuccessed)
+        //    {
+        //        return BadRequest(result);
+        //    }
+        //    return Ok(result);
+        //}
 
     }
 }
