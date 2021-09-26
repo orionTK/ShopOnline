@@ -33,12 +33,9 @@ namespace ShopOnline.Application.Catalogs.Products
         public async Task<int> Create(ProductCreateRequest rq)
         {
             var languages = _context.Languages;
-
-            //translations
             var translations = new List<ProductTranslation>();
             foreach (var language in languages)
             {
-                //if id = (vi, en)
                 if (language.LanguageId == rq.LanguageId)
                 {
                     translations.Add(new ProductTranslation()
@@ -54,14 +51,13 @@ namespace ShopOnline.Application.Catalogs.Products
                 }
                 else
                 {
-                    //id other
                     translations.Add(new ProductTranslation()
                     {
                         ProductName = SystemConstants.ProductConstants.NA,
                         Description = SystemConstants.ProductConstants.NA,
-                        Details = SystemConstants.ProductConstants.NA,
                         SeoAlias = SystemConstants.ProductConstants.NA,
                         SeoDescription = SystemConstants.ProductConstants.NA,
+                        Details = SystemConstants.ProductConstants.NA,
                         SeoTitle = SystemConstants.ProductConstants.NA,
                         LanguageId = language.LanguageId
                     });
@@ -75,21 +71,7 @@ namespace ShopOnline.Application.Catalogs.Products
                 ViewCount = 0,
                 DateCreated = DateTime.Now,
                 ProductTranslations = translations
-
-                //new List<ProductTranslation>() {
-                //   new ProductTranslation()
-                //   {
-                //       ProductName = rq.ProductName,
-                //       Description = rq.Description,
-                //       Details = rq.Details,
-                //       SeoDescription = rq.SeoDescription,
-                //       SeoAlias = rq.SeoAlias,
-                //       SeoTitle = rq.SeoTitle,
-                //       LanguageId = rq.LanguageId
-                //   }
-
             };
-
             //Save image
             if (rq.ThumbnailImage != null)
             {
@@ -97,13 +79,12 @@ namespace ShopOnline.Application.Catalogs.Products
                 {
                     new ProductImage()
                     {
-                        Caption = "Image for product",
+                        Caption = "Thumbnail image",
                         DateCreated = DateTime.Now,
                         FileSize = rq.ThumbnailImage.Length,
                         ImagePath = await this.SaveFile(rq.ThumbnailImage),
                         IsDefault = true,
                         SortOrder = 1
-
                     }
                 };
             }
@@ -137,16 +118,15 @@ namespace ShopOnline.Application.Catalogs.Products
         {
             //user left join
             var query = from p in _context.Products
-                        join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId into ppt
-                        from pt in ppt.DefaultIfEmpty()
+                        join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
                         join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId into ppic
                         from pic in ppic.DefaultIfEmpty()
-                        join c in _context.Categories on pic.CategoryId equals c.CategoryId into cc
-                        from c in cc.DefaultIfEmpty()
-                        //join ct in _context.CategoryTranslations on c.CategoryId equals ct.CategoryId into ctt
-                        //from ct in ctt.DefaultIfEmpty()
-                        where pt.LanguageId == rq.LanguageId
-                        select new { p, pt, pic};
+                        join c in _context.Categories on pic.CategoryId equals c.CategoryId into picc
+                        from c in picc.DefaultIfEmpty()
+                        join pi in _context.ProductImages on p.ProductId equals pi.ProductId into ppi
+                        from pi in ppi.DefaultIfEmpty()
+                        where pt.LanguageId == rq.LanguageId 
+                        select new { p, pt, pic, pi };
             if (!string.IsNullOrEmpty(rq.Keyword))
             {
                 query = query.Where(x => x.pt.ProductName.Contains(rq.Keyword));

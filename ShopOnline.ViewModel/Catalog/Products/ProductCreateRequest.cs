@@ -8,18 +8,20 @@ namespace ShopOnline.ViewModel.Catalog.Products
 {
     public class ProductCreateRequest
     {
-        [Display(Name = "Giá bán")] 
+        [Required(ErrorMessage = "Bạn phải nhập giá gốc của sản phẩm")]
         public decimal Price { set; get; }
-        [Display(Name = "Giá nhập")]
+        [Required(ErrorMessage = "Bạn phải nhập giá bán của sản phẩm")]
         public decimal OriginalPrice { set; get; }
-        [Display(Name = "Số lượng tồn kho")]
+        [Required(ErrorMessage = "Bạn phải số lượng tồn kho")]
         public int Stock { set; get; }
-        [Display(Name = "Tên sản phẩm")]
+
+        [Required(ErrorMessage = "Bạn phải nhập tên sản phẩm")]
         public string ProductName { set; get; }
-        [Display(Name = "Mô tả")]
+        [Required(ErrorMessage = "Bạn phải nhập mô tả")]
         public string Description { set; get; }
-        [Display(Name = "Chi tiết")]
+        [Required(ErrorMessage = "Bạn phải nhập chi tiết sản phẩm")]
         public string Details { set; get; }
+
         public string SeoDescription { set; get; }
         public string SeoTitle { set; get; }
 

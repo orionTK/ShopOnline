@@ -75,7 +75,6 @@ namespace ShopOnline.AdminApp.Services
             requestContent.Add(new StringContent(string.IsNullOrEmpty(rq.SeoTitle) ? "" : rq.SeoTitle.ToString()), "seoTitle");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(rq.SeoAlias) ? "" : rq.SeoAlias.ToString()), "seoAlias");
             requestContent.Add(new StringContent(languageId), "languageId");
-
             var response = await client.PostAsync($"/api/products/create-product", requestContent);
             return response.IsSuccessStatusCode;
         }
