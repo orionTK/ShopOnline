@@ -16,6 +16,8 @@ namespace ShopOnline.AdminApp.Services
         Task<ApiResult<bool>> DeleteProduct(int id);
         Task<ApiResult<ProductViewModel>> GetById(int id, string languageId);
         Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest rq);
+        Task<List<ProductViewModel>> GetFeaturedProducts(string languageId, int take);
+        Task<List<ProductViewModel>> GetLatestProducts(string languageId, int take);
 
     }
 }

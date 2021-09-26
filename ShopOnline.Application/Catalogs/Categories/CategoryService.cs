@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using ShopOnline.ViewModel.Catalog.Products;
 
 namespace ShopOnline.Application.Catalogs.Categories
 {
@@ -31,10 +32,24 @@ namespace ShopOnline.Application.Catalogs.Categories
             {
                 Id = x.c.CategoryId,
                 CategoryName = x.ct.CategoryName,
-                //ParentId = x.c.ParentId
+                ParentId = x.c.ParentId
             }).ToListAsync();
 
 
+        }
+
+        public async Task<CategoryViewModel> GetById(string languageId, int id)
+        {
+            var query = from c in _context.Categories
+                        join ct in _context.CategoryTranslations on c.CategoryId equals ct.CategoryId
+                        where ct.LanguageId == languageId && c.CategoryId == id
+                        select new { c, ct };
+            return await query.Select(x => new CategoryViewModel()
+            {
+                Id = x.c.CategoryId,
+                CategoryName = x.ct.CategoryName,
+                ParentId = x.c.ParentId
+            }).FirstOrDefaultAsync();
         }
     }
 }

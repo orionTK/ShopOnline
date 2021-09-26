@@ -7,7 +7,7 @@ namespace ShopOnline.Utilies.Constants
     public class SystemConstants
     {
         public const string MainConnectString = "ShopOnlineDb";
-
+        public const string CartSession = "CartSession";
         public class ProductConstants
         {
             public const string NA = "N/A";
@@ -20,5 +20,12 @@ namespace ShopOnline.Utilies.Constants
             public const string BaseAddress = "BaseAddress";
 
         }
+
+        public class ProductSettings
+        {
+            public const int NumberOfFeaturedProducts = 4;
+            public const int NumberOfLatestProducts = 6;
+        }
+
     }
 }

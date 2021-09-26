@@ -4,4 +4,22 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\themes\less\oregional\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LazZiya.ExpressLocalization" Version="4.0.4" />
+    <PackageReference Include="LazZiya.TagHelpers" Version="5.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ShopOnline.AdminApp\ShopOnline.AdminApp.csproj" />
+    <ProjectReference Include="..\ShopOnline.Application\ShopOnline.Application.csproj" />
+    <ProjectReference Include="..\ShopOnline.Data\ShopOnline.Data.csproj" />
+    <ProjectReference Include="..\ShopOnline.Utilies\ShopOnline.Utilies.csproj" />
+    <ProjectReference Include="..\ShopOnline.ViewModel\ShopOnline.ViewModel.csproj" />
+  </ItemGroup>
+
 </Project>
