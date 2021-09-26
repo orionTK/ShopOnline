@@ -126,7 +126,10 @@ namespace ShopOnline.Application.Catalogs.Products
                         join pi in _context.ProductImages on p.ProductId equals pi.ProductId into ppi
                         from pi in ppi.DefaultIfEmpty()
                         where pt.LanguageId == rq.LanguageId 
-                        select new { p, pt, pic, pi };
+                       
+                        select new { p, pt, pic, pi }
+     
+                        ;
             if (!string.IsNullOrEmpty(rq.Keyword))
             {
                 query = query.Where(x => x.pt.ProductName.Contains(rq.Keyword));
@@ -134,7 +137,9 @@ namespace ShopOnline.Application.Catalogs.Products
 
             if (rq.CategoryId != null && rq.CategoryId > 0)
             {
-                query = query.Where(p => p.pic.CategoryId == rq.CategoryId);
+                query = query
+                    .Where(p => p.pic.CategoryId == rq.CategoryId)
+                    ;
             }
 
             int totalRow = query.Count();
@@ -166,6 +171,43 @@ namespace ShopOnline.Application.Catalogs.Products
                 Items = data
             };
             return pagedResult;
+        }
+
+        public async Task<List<ProductViewModel>> GetFeaturedProducts(string languageId, int take)
+        {
+            //1. Select join
+            var query = from p in _context.Products
+                        join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
+                        join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId into ppic
+                        from pic in ppic.DefaultIfEmpty()
+                        join pi in _context.ProductImages on p.ProductId equals pi.ProductId into ppi
+                        from pi in ppi.DefaultIfEmpty()
+                        join c in _context.Categories on pic.CategoryId equals c.CategoryId into picc
+                        from c in picc.DefaultIfEmpty()
+                        where pt.LanguageId == languageId && (pi == null || pi.IsDefault == true)
+                        && p.IsFeatured == true
+                        select new { p, pt, pic, pi };
+
+            var data = await query.OrderByDescending(x => x.p.DateCreated).Take(take)
+                .Select(x => new ProductViewModel()
+                {
+                    ProductId = x.p.ProductId,
+                    ProductName = x.pt.ProductName,
+                    DateCreated = x.p.DateCreated,
+                    Description = x.pt.Description,
+                    Details = x.pt.Details,
+                    LanguageId = x.pt.LanguageId,
+                    OriginalPrice = x.p.OriginalPrice,
+                    Price = x.p.Price,
+                    SeoAlias = x.pt.SeoAlias,
+                    SeoDescription = x.pt.SeoDescription,
+                    SeoTitle = x.pt.SeoTitle,
+                    Stock = x.p.Stock,
+                    ViewCount = x.p.ViewCount,
+                    ThumbnailImage = x.pi.ImagePath
+                }).ToListAsync();
+
+            return data;
         }
 
         public async Task<bool> Update(ProductUpdateRequest rq)
@@ -337,9 +379,9 @@ namespace ShopOnline.Application.Catalogs.Products
                 SeoTitle = productTranslation != null ? productTranslation.SeoTitle : null,
                 Stock = product.Stock,
                 ViewCount = product.ViewCount,
-                Categories = categories
+                Categories = categories,
 
-                //ThumbnailImage = image != null ? image.ImagePath : "no-image.jpg"
+                ThumbnailImage = image != null ? image.ImagePath : "no-image.jpg"
             };
             return pv;
         }

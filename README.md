@@ -6,6 +6,9 @@
 - microsoft.entityframeworkcore.sqlserver
 - microsoft.entityframeworkcore.tools
 
-#ORM
-#OTHER FRAMEWORK 
+# ORM
+# OTHER FRAMEWORK 
 - Ckeditor
+
+# I18N (Internalization)
+- Source code: https://github.com/LazZiya/ExpressLocalizationSampleCore3

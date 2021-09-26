@@ -11,5 +11,6 @@ namespace ShopOnline.AdminApp.Services
     public interface ICategoryApiClient
     {
         Task<List<CategoryViewModel>> GetAll(string languageId);
+        Task<ApiResult<CategoryViewModel>> GetById(string languageId, int id);
     }
 }

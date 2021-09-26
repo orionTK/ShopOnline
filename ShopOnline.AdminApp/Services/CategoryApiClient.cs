@@ -21,5 +21,9 @@ namespace ShopOnline.AdminApp.Services
         {
             return await GetListAsync<CategoryViewModel>("/api/categories?languageId=" + $"{languageId}");
         }
+        public async Task<ApiResult<CategoryViewModel>> GetById(string languageId, int id)
+        {
+            return await base.GetAsync<CategoryViewModel>($"/api/categories/{id}/{languageId}");
+        }
     }
 }

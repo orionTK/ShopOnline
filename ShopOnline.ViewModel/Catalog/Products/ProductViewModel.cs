@@ -22,7 +22,7 @@ namespace ShopOnline.ViewModel.Catalog.Products
         public Decimal Price { get; set; }
         public Decimal OriginalPrice { get; set; }
         public int Stock { get; set; }
-        public IFormFile ThumbnailImage { get; set; }
+        public string ThumbnailImage { get; set; }
         public List<string> Categories { get; set; } = new List<string>();
         //public List<CategoryViewModel> Categories { get; set; }
     }

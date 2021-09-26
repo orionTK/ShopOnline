@@ -25,19 +25,12 @@ namespace ShopOnline.Application.Controllers
             return Ok(categories);
         }
 
-        //[HttpPut("{id}/categories")]
-        //public async Task<IActionResult> CategoryAssign(Guid id, [FromBody] CategoryAssignRequest rq)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-
-        //    var result = await _categoryService.CategoryAssign(id, rq);
-        //    if (!result.IsSuccessed)
-        //    {
-        //        return BadRequest(result);
-        //    }
-        //    return Ok(result);
-        //}
+        [HttpGet("{id}/{languageId}")]
+        public async Task<IActionResult> GetById(string languageId, int id)
+        {
+            var category = await _categoryService.GetById(languageId, id);
+            return Ok(category);
+        }
 
     }
 }
