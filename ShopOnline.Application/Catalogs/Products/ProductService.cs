@@ -125,7 +125,7 @@ namespace ShopOnline.Application.Catalogs.Products
                         from c in picc.DefaultIfEmpty()
                         join pi in _context.ProductImages on p.ProductId equals pi.ProductId into ppi
                         from pi in ppi.DefaultIfEmpty()
-                        where pt.LanguageId == rq.LanguageId 
+                       where pt.LanguageId == rq.LanguageId 
                        
                         select new { p, pt, pic, pi }
      
@@ -148,16 +148,16 @@ namespace ShopOnline.Application.Catalogs.Products
                 .Select(x => new ProductViewModel()
                 {
                     ProductId = x.p.ProductId,
-                    ProductName = x.pt.ProductName,
-                    Description = x.pt.Description,
-                    Details = x.pt.Details,
+                    ProductName = x.pt.ProductName == null ? SystemConstants.ProductConstants.NA :x.pt.ProductName,
+                    Description = x.pt.Description == null ? SystemConstants.ProductConstants.NA : x.pt.Description,
+                    Details = x.pt.Details == null ? SystemConstants.ProductConstants.NA : x.pt.Details,
                     OriginalPrice = x.p.OriginalPrice,
                     DateCreated = x.p.DateCreated,
                     LanguageId = x.pt.LanguageId,
                     Price = x.p.Price,
-                    SeoAlias = x.pt.SeoAlias,
-                    SeoDescription = x.pt.SeoDescription,
-                    SeoTitle = x.pt.SeoTitle,
+                    SeoAlias = x.pt.SeoAlias == null ? SystemConstants.ProductConstants.NA : x.pt.SeoAlias,
+                    SeoDescription = x.pt.SeoDescription == null ? SystemConstants.ProductConstants.NA : x.pt.SeoDescription,
+                    SeoTitle = x.pt.SeoTitle == null ? SystemConstants.ProductConstants.NA : x.pt.SeoTitle,
                     Stock = x.p.Stock,
                     ViewCount = x.p.ViewCount,
                     //Categories = x.
@@ -236,6 +236,7 @@ namespace ShopOnline.Application.Catalogs.Products
             pt.SeoAlias = rq.SeoAlias;
             pt.SeoTitle = rq.SeoTitle;
             pt.LanguageId = rq.LanguageId;
+            
             return await _context.SaveChangesAsync() > 0;
         }
 

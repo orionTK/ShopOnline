@@ -79,21 +79,64 @@ namespace ShopOnline.AdminApp.Services
             return response.IsSuccessStatusCode;
         }
 
-        public Task<ApiResult<bool>> UpdateProduct(int id, ProductUpdateRequest rq)
+        public async Task<ApiResult<bool>> UpdateProduct(ProductUpdateRequest rq)
         {
-            throw new NotImplementedException();
+            var sessions = _httpContextAccessor
+                .HttpContext
+                .Session
+                .GetString(SystemConstants.AppSettings.Token);
+            var languageId = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var requestContent = new MultipartFormDataContent();
+
+            if (rq.ThumbnailImage != null)
+            {
+                byte[] data;
+                using (var br = new BinaryReader(rq.ThumbnailImage.OpenReadStream()))
+                {
+                    data = br.ReadBytes((int)rq.ThumbnailImage.OpenReadStream().Length);
+                }
+                ByteArrayContent bytes = new ByteArrayContent(data);
+                requestContent.Add(bytes, "thumbnailImage", rq.ThumbnailImage.FileName);
+            }
+
+            //requestContent.Add(new StringContent(request.Id.ToString()), "id");
+
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(rq.ProductName) ? "" : rq.ProductName.ToString()), "name");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(rq.Description) ? "" : rq.Description.ToString()), "description");
+
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(rq.Details) ? "" : rq.Details.ToString()), "details");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(rq.SeoDescription) ? "" : rq.SeoDescription.ToString()), "seoDescription");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(rq.SeoTitle) ? "" : rq.SeoTitle.ToString()), "seoTitle");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(rq.SeoAlias) ? "" : rq.SeoAlias.ToString()), "seoAlias");
+            requestContent.Add(new StringContent(languageId), "languageId");
+
+            var response = await client.PutAsync($"/api/products/update-product", requestContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
         }
 
-        public Task<ApiResult<bool>> DeleteProduct(int id)
+        public async Task<ApiResult<bool>> DeleteProduct(int id)
         {
-            throw new NotImplementedException();
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
+            var client = _httpClientFactory.CreateClient();
+
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            var response = await client.DeleteAsync($"/api/products/delete-product/{id}");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
         }
 
-        //public async Task<ApiResult<ProductViewModel>> GetByIdProduct(int id)
-        //{
-        //    var data = await base.GetAsync<PagedResult<ProductViewModel>>($"/api/products/paging?Keyword={rq.Keyword}" + $"&languageId={rq.LanguageId}" + "&pageIndex=" + $"{rq.PageIndex}&pageSize={rq.PageSize}&categoryId={rq.CategoryId}");
-        //    return data;
-        //}
 
         public async Task<ApiResult<ProductViewModel>> GetById(int id, string languageId)
         {

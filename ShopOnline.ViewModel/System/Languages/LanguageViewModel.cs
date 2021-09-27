@@ -8,5 +8,6 @@ namespace ShopOnline.ViewModel.System.Languages
     {
         public string LanguageId { get; set; }
         public string Name { get; set; }
+        public bool IsDefault { get; set; }
     }
 }
