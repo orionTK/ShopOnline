@@ -38,9 +38,10 @@ namespace ShopOnline.WebApp.Controllers
                 LanguageId = culture,
                 PageSize = 10
             });
+            var category = await _categoryApiClient.GetById(culture, id);
             return View(new ProductCategoryViewModel()
             {
-                Category = await _categoryApiClient.GetById(culture, id),
+                Category = category.ResultObj,
                 Products = products.ResultObj
             }); ;
         }

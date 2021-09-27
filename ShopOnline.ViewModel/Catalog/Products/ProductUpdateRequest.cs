@@ -10,7 +10,7 @@ namespace ShopOnline.ViewModel.Catalog.Products
     public class ProductUpdateRequest
     {
         public int ProductId { get; set; }
-        [Required(ErrorMessage ="Bạn phải nhập tên sản phẩm")]
+        
         public string ProductName { get; set; }
         public string Description { get; set; }
         public string Details { get; set; }

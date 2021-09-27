@@ -64,6 +64,8 @@ namespace ShopOnline.AdminApp.Controllers
            return View();
         }
 
+       
+
         [HttpPost]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
@@ -82,7 +84,108 @@ namespace ShopOnline.AdminApp.Controllers
             ModelState.AddModelError("", "Thêm sản phẩm thất bại");
             return View(request);
         }
-        
+
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)  
+        {
+            var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+            var result = await _productApiClient.GetById(id, languageId);
+            if (result.IsSuccessed)
+            {
+                var product = result.ResultObj;
+                var updateRequest = new ProductUpdateRequest()
+                {
+                    ProductId = product.ProductId,
+                    Description = product.Description,
+                    Details = product.Details,
+                    ProductName = product.ProductName,
+                    SeoAlias = product.SeoAlias,
+                    SeoDescription = product.SeoDescription,
+                    SeoTitle = product.SeoTitle,
+                    Price = product.Price,
+                    OriginalPrice = product.OriginalPrice,
+                    Stock = product.Stock
+                };
+                return View(updateRequest);
+            }
+            return RedirectToAction("Error", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ProductUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _productApiClient.UpdateProduct(request);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Cập nhật sản phẩm dùng thành công";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", result.Message);
+            return View(request);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return View(new ProductDeleteRequest()
+            {
+                Id = id
+            });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+            var result = await _productApiClient.GetById(id, languageId);
+            if (result.IsSuccessed)
+            {
+                var product = result.ResultObj;
+                var p = new ProductViewModel()
+                {
+                    ProductId = product.ProductId,
+                    OriginalPrice = product.OriginalPrice,
+                    Price = product.Price,
+                    Stock = product.Stock,
+                    ViewCount = product.ViewCount,
+                   
+                    Description = product.Description,
+                    Details = product.Details,
+                    ProductName = product.ProductName,
+                    SeoAlias = product.SeoAlias,
+                    SeoDescription = product.SeoDescription,
+                    SeoTitle = product.SeoTitle,
+                    DateCreated = product.DateCreated,
+                    ThumbnailImage = product.ThumbnailImage
+
+                };
+                return View(p);
+            }
+            return RedirectToAction("Error", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(ProductDeleteRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _productApiClient.DeleteProduct(request.Id);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Xóa sản phẩm thành công";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", "Xóa không thành công");
+            return View(request);
+        }
+
         [HttpGet]
         public async Task<IActionResult> CategoryAssign(int id)
         {
@@ -129,5 +232,7 @@ namespace ShopOnline.AdminApp.Controllers
             return categoryRq;
 
         }
+
+
     }
 }

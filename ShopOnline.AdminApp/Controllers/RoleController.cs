@@ -81,7 +81,7 @@ namespace ShopOnline.AdminApp.Controllers
             var result = await _roleApiClient.UpdateRole(id, request);
             if (result.IsSuccessed)
             {
-                TempData["result"] = "Cập nhật role dùng thành công";
+                TempData["result"] = "Cập nhật quyền dùng thành công";
                 return RedirectToAction("Index");
             }
 
