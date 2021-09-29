@@ -12,7 +12,7 @@ namespace ShopOnline.Application.Catalogs.Products
     public interface IProductService
     {
         Task<int> Create(ProductCreateRequest rq);
-        Task<bool> Update(ProductUpdateRequest rq);
+        Task<int> Update(ProductUpdateRequest rq);
         Task<bool> UpdatePrice(int productId, decimal newPrice);
         Task<bool> UpdateStock(int productId, int addQuantity);
         Task AddViewCount(int productId);

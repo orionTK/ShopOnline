@@ -96,7 +96,7 @@ namespace ShopOnline.AdminApp.Controllers
                 var product = result.ResultObj;
                 var updateRequest = new ProductUpdateRequest()
                 {
-                    ProductId = product.ProductId,
+                    ProductId = id,
                     Description = product.Description,
                     Details = product.Details,
                     ProductName = product.ProductName,
@@ -113,7 +113,8 @@ namespace ShopOnline.AdminApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductUpdateRequest request)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Edit([FromForm] ProductUpdateRequest request)
         {
             if (!ModelState.IsValid)
                 return View();
@@ -125,7 +126,7 @@ namespace ShopOnline.AdminApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ModelState.AddModelError("", result.Message);
+            ModelState.AddModelError("", "Cập nhật sản phẩm thất bại");
             return View(request);
         }
 

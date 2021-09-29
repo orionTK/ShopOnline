@@ -4,11 +4,25 @@
     ViewData["Title"] = "Cập nhật";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@section Scripts{
+    <script src="https://cdn.ckeditor.com/ckeditor5/21.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#txt_details'), {
+                // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+    </script>
+}
 <div class="container-fluid">
     <h1 class="mt-4">Cập nhật tin quyền</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/role/index">Danh sách sản phẩm</a></li>
+        <li class="breadcrumb-item"><a href="/product/index">Danh sách sản phẩm</a></li>
         <li class="breadcrumb-item active">Cập nhật tin sản phẩm</li>
     </ol>
 
@@ -29,12 +43,12 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Description" class="control-label"></label>
-                        <input asp-for="Description" class="form-control" />
+                        <textarea asp-for="Description" class="form-control"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Details" class="control-label"></label>
-                        <input asp-for="Details" class="form-control" />
+                        <textarea id="txt_details" asp-for="Details" class="form-control"></textarea>
                         <span asp-validation-for="Details" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -74,7 +88,7 @@
                         <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Lưu" class="btn btn-primary" />
+                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
                     </div>
                 </form>
             </div>

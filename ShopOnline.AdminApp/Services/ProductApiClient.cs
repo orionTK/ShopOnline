@@ -51,8 +51,7 @@ namespace ShopOnline.AdminApp.Services
             client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
-            var requestContent = new MultipartFormDataContent();
-
+            var requestContent = new MultipartFormDataContent(); 
             if (rq.ThumbnailImage != null)
             {
                 byte[] data;
@@ -75,7 +74,8 @@ namespace ShopOnline.AdminApp.Services
             requestContent.Add(new StringContent(string.IsNullOrEmpty(rq.SeoTitle) ? "" : rq.SeoTitle.ToString()), "seoTitle");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(rq.SeoAlias) ? "" : rq.SeoAlias.ToString()), "seoAlias");
             requestContent.Add(new StringContent(languageId), "languageId");
-            var response = await client.PostAsync($"/api/products/create-product", requestContent);
+
+            var response = await client.PostAsync($"/api/products", requestContent);
             return response.IsSuccessStatusCode;
         }
 
@@ -85,12 +85,15 @@ namespace ShopOnline.AdminApp.Services
                 .HttpContext
                 .Session
                 .GetString(SystemConstants.AppSettings.Token);
+
             var languageId = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var requestContent = new MultipartFormDataContent();
+
 
             if (rq.ThumbnailImage != null)
             {
@@ -113,8 +116,7 @@ namespace ShopOnline.AdminApp.Services
             requestContent.Add(new StringContent(string.IsNullOrEmpty(rq.SeoTitle) ? "" : rq.SeoTitle.ToString()), "seoTitle");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(rq.SeoAlias) ? "" : rq.SeoAlias.ToString()), "seoAlias");
             requestContent.Add(new StringContent(languageId), "languageId");
-
-            var response = await client.PutAsync($"/api/products/update-product", requestContent);
+            var response = await client.PutAsync($"/api/products/update-product/{rq.ProductId}", requestContent);
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
