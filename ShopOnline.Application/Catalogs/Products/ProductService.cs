@@ -104,8 +104,8 @@ namespace ShopOnline.Application.Catalogs.Products
         {
             var p = await _context.Products.FindAsync(productId);
             if (p == null) throw new ShopOnlineExeptions($"Cannot find a product with id: {productId}");
-
-            var thumbnaiImage = _context.ProductImages.Where(x => x.IsDefault == true && x.ProductId == productId);
+            //x => x.IsDefault == true && 
+            var thumbnaiImage = _context.ProductImages.Where(x => x.ProductId == productId);
             foreach (var i in thumbnaiImage)
             {
                 await _storageService.DeleteFileAsync(i.ImagePath);
@@ -210,11 +210,18 @@ namespace ShopOnline.Application.Catalogs.Products
             return data;
         }
 
-        public async Task<bool> Update(ProductUpdateRequest rq)
+        public async Task<int> Update(ProductUpdateRequest rq)
         {
             var p = await _context.Products.FindAsync(rq.ProductId);
-            var pt = _context.ProductTranslations.FirstOrDefault(x => x.ProductId == rq.ProductId);
-            if (p == null || pt == null) throw new ShopOnlineExeptions($"Don't find a product with id: {rq.ProductId}");
+            var productTranslations = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == rq.ProductId  && x.LanguageId == rq.LanguageId);
+            if (p == null || productTranslations == null) throw new ShopOnlineExeptions($"Don't find a product with id: {rq.ProductId}");
+
+            productTranslations.ProductName = rq.ProductName;
+            productTranslations.SeoAlias = rq.SeoAlias;
+            productTranslations.SeoDescription = rq.SeoDescription;
+            productTranslations.SeoTitle = rq.SeoTitle;
+            productTranslations.Description = rq.Description;
+            productTranslations.Details = rq.Details;
 
             //Save image
             if (rq.ThumbnailImage != null)
@@ -229,15 +236,9 @@ namespace ShopOnline.Application.Catalogs.Products
             }
 
             p.Price = rq.Price != null ? rq.Price : p.Price;
-            pt.ProductName = rq.ProductName;
-            pt.Description = rq.Description;
-            pt.Details = rq.Details;
-            pt.SeoDescription = rq.SeoDescription;
-            pt.SeoAlias = rq.SeoAlias;
-            pt.SeoTitle = rq.SeoTitle;
-            pt.LanguageId = rq.LanguageId;
-            
-            return await _context.SaveChangesAsync() > 0;
+           p.OriginalPrice = rq.OriginalPrice != null ? rq.OriginalPrice : p.OriginalPrice;
+
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<bool> UpdatePrice(int productId, decimal newPrice)

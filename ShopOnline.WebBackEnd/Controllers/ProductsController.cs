@@ -60,8 +60,9 @@ namespace ShopOnline.WebBackEnd.Controllers
 
         
 
-        [HttpPost("create-product")]
+        [HttpPost()]
         [Consumes("multipart/form-data")]
+        [Authorize]
         //chap nhan doi tuong form
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
@@ -71,24 +72,27 @@ namespace ShopOnline.WebBackEnd.Controllers
             }
             var productId = await _productService.Create(request);
             if (productId == 0)
-            {
-                return BadRequest("Không tạo được sản phẩm"); //400
-            }
+                return BadRequest();
+
             var product = await _productService.GetById(productId, request.LanguageId);
-            //return Ok(); //200
-            return CreatedAtAction(nameof(GetById), new { ProdcutId = productId }, product);
+
+            return CreatedAtAction(nameof(GetById), new { id = productId }, product);
 
         }
 
-        [HttpPut("update-product")]
-        public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
+       
+        [HttpPut("update-product/{productId}")]
+        [Consumes("multipart/form-data")]
+        [Authorize]
+        public async Task<IActionResult> Update([FromRoute] int productId, [FromForm] ProductUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            request.ProductId = productId;
             var status = await _productService.Update(request);
-            if (status == false)
+            if (status > 0)
             {
                 return BadRequest(); //400
             }
