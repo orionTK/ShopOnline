@@ -142,9 +142,11 @@ namespace ShopOnline.Application.Catalogs.Products
                     ;
             }
 
-            int totalRow = query.Count();
+            int totalRow = await query.CountAsync();
             var data = await query.Skip((rq.PageIndex - 1) * rq.PageSize)
                 .Take(rq.PageSize)
+                .GroupBy(x=>x.p.ProductId)
+    
                 .Select(x => new ProductViewModel()
                 {
                     ProductId = x.p.ProductId,
